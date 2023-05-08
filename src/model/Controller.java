@@ -8,8 +8,8 @@ public class Controller{
 
     public Controller(){
         
-        products = ArrayList<products>();
-        users = ArrayList<users>();
+        products = new ArrayList<products>();
+        users = new ArrayList<users>();
 
     }
 
@@ -40,6 +40,33 @@ public class Controller{
         return msg;
     }
 
+    public String deleteBibliographicProduct(String productId){
+
+        String msg = "Couldnt delete product";
+        boolean productFound = false;
+
+        for(int i = 0; i < products.size() && !productFound; i++){
+            BibliographicProduct product = products.get(i);
+            if(product.getId().equals(productId)){
+                
+                productFound = true;
+                products.remove(i);
+                msg = "The product " + product.getName() + " was deleted.";
+
+            }
+
+        }
+
+        return msg;
+
+    }
+
+    public String modifyBibliographicProduct(String productId){
+
+
+        String msg =
+    }
+
     public String registerMagazine(String id, int pagesAmount, String name, String publishDate, String url, int pagesRead, double subscriptionPrice, int categoryFlag, String emissionFrequency){
 
         String msg = " ";
@@ -68,36 +95,89 @@ public class Controller{
         return msg;
     }
 
-    public String registerUser(int flag){
+    public String registerUser(int flag, String name, String id, String linkDate){
 
         String msg = "User could not be registered";
-        int pos = validPositionUsers();
         Users user = null;
 
-        if(pos != -1){
 
             if(flag == 1){
 
-                user = new RegularUser();
+                user = new RegularUser(name, id, linkDate);
                 users.add(user);
                 msg = "Regular user has been registered";
 
             }
             else if(flag == 2){
 
-                user = new PremiumUser();
+                user = new PremiumUser(name, id, linkDate);
                 users.add(user);
                 msg = "Premium user has been registered";
-
             }
-
-        }
-        else{
-
-            msg = "Users array full";
-        }
+            
         
         return msg;
     }
+
+    public String buyBibliographicProduct(String productName, String userId){
+        
+        String msg = " ";
+
+        boolean prouductFound = false;
+
+        for(int i = 0; i < products.size() && !bookFound; i++){
+            
+            BibliographicProduct product = producs.get(i);
+            if(product instanceof Book && product.getName().equals(productName)){
+
+                productFound = true;
+
+                for(int j = 0; j < users.size() && !userFound; j++){
+
+                    Users user = users.get(j);
+                    if(user instanceof PremiumUser && user.getId().equals(userId)){
+                        
+                        userFound = true;
+                        user.addProduct(product);
+                        msg = "The book " + productName + "has been bought.":
+                    }
+                    else if(user instanceof RegularUser && user.getId().equals(userId)){
+
+                        userFound = true;
+                        msg = user.addBook(product) + productName;
+                        
+
+                    }
+                }
+                
+            }
+            else if(product instanceof Magazine && product.getName().equals(productName)){
+
+                productFound = true;
+
+                for(int j = 0; j < users.size() && !userFound; j++){
+
+                    Users user = users.get(j);
+                    if(user instanceof PremiumUser && user.getId().equals(userId)){
+                        
+                        userFound = true;
+                        user.addProduct(product);
+                        msg = "You have subscribed to the magazine " + productName; 
+                    }
+                    else if(user instanceof RegularUser && user.getId().equals(userId)){
+
+                        userFound = true;
+                        msg = user.addMagazine(product) + productName;
+                    }                
+            }
+
+        }
+
+        }
+
+        return msg;
+
+    }
+    
 
 }

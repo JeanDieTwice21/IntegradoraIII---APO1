@@ -59,13 +59,17 @@ public class Main{
         System.out.println("1. Book");
         System.out.println("2. Magazine");
         option = reader.nextInt();
+        System.out.println("Enter the name of the product: ");
+        name = reader.next();
+        System.out.println("Enter the publish date: ");
+        publishDate = reader.next();
+        System.out.println("Enter the amount of pages: ");
+        pagesAmount = reader.nextInt();   
+        System.out.println("Enter the url of the product: ");     
 
         if(option == 1){
 
-            System.out.println("Enter the name of the book: ");
-            name = reader.next();
-            System.out.println("Enter the publish date: ");
-            publishDate = reader.next();
+       
             System.out.println("Enter a show review: ");
             reader.next();
             review = reader.nextLine();
@@ -73,15 +77,112 @@ public class Main{
             System.out.println("1. Science fiction");
             System.out.println("2. Fantasy");
             System.out.println("3. History novel");
-            genreFlag = reader.nextInt();
+            genreFlag = validateRegisterChoice();
             System.out.println("Enter the price: ");
             sellPrice = reader.nextDouble();
-            System.out.println("Enter the amount of pages: ");
-            pagesAmount = reader.nextInt();
+
 
             confirmMsg = controller.registerBook(id, pagesAmount, name, publishDate, url, review, genreFlag, sellPrice);
             System.out.println(confirmMsg);
         }
+        else if(option == 2){
+
+            System.out.println("Enter the subscription price: ");
+            double subscriptionPrice = reader.nextDouble();
+            System.out.println("Choose the category: ");
+            System.out.println("1. Varieties");
+            System.out.println("2. Design");
+            System.out.println("3. Science");
+            int categoryFlag = reader.nextInt();
+            System.out.println("Enter the emission frequency: ");
+            String emissionFrequency = reader.next();
+
+            confirmMsg = controller.registerMagazine(id, pagesAmount, name, publishDate, url, subscriptionPrice, categoryFlag, emissionFrequency);
+            System.out.println(confirmMsg);
+
+
+        }
 
     }
+
+    public void registryUser(){
+
+        String name = " ";
+        String id = " ";
+        String linkDate = " ";
+        int userFlag = 0;
+        String confirmMsg = " ";
+
+        System.out.println("Choose the kind of user: ");
+        System.out.println("1. Premium user");
+        System.out.println("2. Regular user");
+        userFlag = reader.nextInt();
+
+        System.out.println("Enter the name: ");
+        name = reader.next();
+        System.out.println("Enter the id: ");
+        id = reader.next();
+        System.out.println("Enter the link date: ");
+        linkDate = reader.next();
+
+        confirmMsg = controller.registerUser(userFlag, name, id, linkDate);
+
+        System.out.println(confirmMsg);
+
+    }
+
+    public int validateRegisterChoice(){
+    
+        boolean foundValidateInput = false;
+        int choice = 0;
+
+        if(reader.hasNextInt()){
+
+            choice = reader.nextInt();
+
+            if(choice == 1 || choice == 2 || choice ==3){
+
+                return choice;
+
+            }
+            else{
+                
+                reader.next();
+
+                do{
+
+                    System.out.println("Invalid choice!");
+                    System.out.println(" ");
+                    System.out.println("Please, choose a correct option.");
+                    choice = reader.nextInt();
+
+                }while(choice != 1 && choice != 2 && choice != 3);
+
+                
+            
+            }
+        }
+        else{
+
+            reader.next();
+
+            do{
+
+                System.out.println("That is not a number, please, enter a number: ");
+                boolean flag = reader.hasNextInt();
+                if(flag == true){
+
+                    choice = reader.nextInt();
+                    foundValidateInput = true;
+                }
+                else{
+                    reader.next();
+
+                }
+
+            }while(foundValidateInput != true);
+        }
+    }
+
+
 }
