@@ -131,6 +131,161 @@ public class Main{
 
     }
 
+    public void modifyBibliographicProduct(){
+
+        int firstOption = 0;
+        
+        System.out.println("Choose the type of product: ");
+        System.out.println("1. Book");
+        System.out.println("2. Magazaine");
+        option = reader.nextInt();
+        System.out.println("Enter the id of the product to modify: ");
+        productId = reader.next();
+
+        if(option == 1){
+
+            int secondOption = 0;
+            
+            do{
+                
+            
+                
+
+                System.out.println("What do you want to modify? ");
+                System.out.println("1. Book name");
+                System.out.println("2. Book pages amount");
+                System.out.println("3. Book publish date");
+                System.out.println("4. Book review");
+                System.out.println("5. Book genre");
+                System.out.println("6. Book price");
+                System.out.println("7. Nothing");
+                secondOption = reader.nextInt();
+
+                if(secondOption == 1){
+                    
+                    String newName = " ";
+                    System.out.println("Enter the new name: ");
+                    newName = reader.next();
+                    System.out.println(controller.modifyBibliographicProduct(productId, newName)); 
+                }
+                else if(secondOption == 2){
+
+                    int newPagesAmount = 0;
+                    System.out.println("Enter the new pages amount: ");
+                    newPagesAmount = reader.nextInt();
+                    System.out.println(controller.modifyBibliographicProduct(productId, newPagesAmount));
+                }
+                else if(secondOption == 3){
+                    
+                    String newDate = " ";
+                    System.out.println("Enter the new publish date: ");
+                    newDate = reader.next();
+                    System.out.println(controller.modifyBibliographicProduct(productId, newDate));
+
+                }
+                else if(secondOption == 4){
+                    
+                    String newReview = " ";
+                    System.out.println("Enter the new review: ");
+                    reader.next();
+                    newReview = reader.nextLine();
+                    System.out.println(controller.modifyBibliographicProduct(productId, newReview));
+
+                }
+                else if(secondOption == 5){
+
+                    int newGenre = 0;
+                    System.out.println("Choose the genre: ");
+                    System.out.println("1. Science fiction");
+                    System.out.println("2. Fantasy");
+                    System.out.println("3. History novel");
+                    newGenre = reader.nextInt();
+                    System.out.println(controller.modifyBibliographicProduct(productId, newGenre));
+
+
+                }
+                else if(secondOption == 6){
+                    
+                    double newPrice = 0;
+                    System.out.println("Enter the new price: ");
+                    newPrice = reader.nextDouble(productId, newPrice);
+
+                }
+
+            }while(secondOption != 7);
+
+        }
+        else if(firstOption == 2){
+
+            int thirdOption = 0;
+
+            do{
+            
+                System.out.println("What do you want to modify? ");
+                System.out.println("1. Magazine name");
+                System.out.println("2. Magazine pages amount");
+                System.out.println("3. Magazine publish date");
+                System.out.println("4. Magazine emission frequency");
+                System.out.println("5. Magazine category");
+                System.out.println("6. Magazine subscription price");
+                System.out.println("7. Nothing");
+                secondOption = reader.nextInt();
+
+                if(thirdOption == 1){
+                    
+                    String newName = " ";
+                    System.out.println("Enter the new name: ");
+                    newName = reader.next();
+                    System.out.println(controller.modifyBibliographicProduct(productId, newName)); 
+                }
+                else if(thirdOption == 2){
+
+                    int newPagesAmount = 0;
+                    System.out.println("Enter the new pages amount: ");
+                    newPagesAmount = reader.nextInt();
+                    System.out.println(controller.modifyBibliographicProduct(productId, newPagesAmount));
+                }
+                else if(thirdOption == 3){
+                    
+                    String newDate = " ";
+                    System.out.println("Enter the new publish date: ");
+                    newDate = reader.next();
+                    System.out.println(controller.modifyBibliographicProduct(productId, newDate));
+
+                }
+                else if(thirdOption == 4){
+                    
+                    String newFrequency = " ";
+                    System.out.println("Enter the new frequency: ");
+                    newFrequency = reader.next();
+                    System.out.println(controller.modifyBibliographicProduct(productId, newFrequency));
+
+                }
+                else if(thirdOption == 5){
+
+                    int newCategory = 0;
+                    System.out.println("Choose the new category: ");
+                    System.out.println("1. Varieties");
+                    System.out.println("2. Design");
+                    System.out.println("3. Science");
+                    newCategory = reader.nextInt();
+                    System.out.println(controller.modifyBibliographicProduct(productId, newGenre));
+
+
+                }
+                else if(thirdOption == 6){
+                    
+                    double newPrice = 0;
+                    System.out.println("Enter the new price: ");
+                    newPrice = reader.nextDouble();
+                    System.out.println(controller.modifyBibliographicProduct(productId, newPrice));
+
+                }
+
+            }while(thirdOption != 7);
+        }
+    }
+
     public int validateRegisterChoice(){
     
         boolean foundValidateInput = false;

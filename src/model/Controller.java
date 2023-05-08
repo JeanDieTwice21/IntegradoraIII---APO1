@@ -61,10 +61,36 @@ public class Controller{
 
     }
 
-    public String modifyBibliographicProduct(String productId){
+    public String modifyBibliographicProduct(String productId, double newPrice){
+
+        BibliographicProduct product = getProduct(productId);
+        product.setPrice(newPrice);
+        String msg = "Price changed.";
+    }
+
+    public String modifyBibliographicProduct(String productId, String newName){
+
+        BibliographicProduct product = getProduct(productId);
+        product.setPrice(newName);
+        String msg = "Name changed.";
+    }
 
 
-        String msg =
+    public BibliographicProduct getProduct(String productId){
+
+        boolean productFound = false;
+        BibliographicProduct product = null;
+
+        for(int i = 0; i < products.size() && !productFound; i++){
+            BibliographicProduct product = product.get(i);
+            if(product.getId().equals(productId)){
+
+                productFound = true;
+
+            }
+        }
+
+        return product;
     }
 
     public String registerMagazine(String id, int pagesAmount, String name, String publishDate, String url, int pagesRead, double subscriptionPrice, int categoryFlag, String emissionFrequency){
