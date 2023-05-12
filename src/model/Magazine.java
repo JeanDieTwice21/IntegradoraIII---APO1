@@ -22,21 +22,9 @@ public class Magazine extends BibliographicProduct{
 
     }
 
-    public void setCategory(int newCategory){
+    public void setCategory(Category newCategory){
 
-        if(newCategory == 1){
-
-            this.category = Category.VARIETIES;
-        }
-        else if(newCategory == 2){
-
-            this.category = Category.DESING;
-
-        }
-        else if(newCategory == 3){
-
-            this.category = Category.SCIENCE;
-        }
+        this.category = newCategory;
     }
 
     public void setEmissionFrequency(String newFrequency){

@@ -25,19 +25,8 @@ public class Book extends BibliographicProduct{
         this.sellPrice = newPrice;
     }
 
-    public void setGenre(int newGenre){
+    public void setGenre(Genre newGenre){
 
-        if(newGenre == 1){
-
-            this.genre = Genre.SCIENCE_FICTION;
-        }
-        else if(newGenre == 2){
-
-            this.genre = Genre.FANTASY;
-        }
-        else if(newGenre == 3){
-
-            this.genre = Genre.HISTORY_NOVEL;
-        }
+        this.genre = newGenre;
     }
 }

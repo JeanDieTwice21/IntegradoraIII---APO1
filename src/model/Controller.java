@@ -1,5 +1,6 @@
 package model;
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class Controller{
 
@@ -13,8 +14,11 @@ public class Controller{
 
     }
 
-    public String registerBook(String id, int pagesAmount, String name, String publishDate, String url, String review, int genreFlag, double sellPrice){
+    public String registerBook(int pagesAmount, String name, String publishDate, String url, String review, int genreFlag, double sellPrice){
         
+        UUID uuid = UUID.randomUUID();
+        String id = uuid.toString().replace("-", "").substring(0, 3);
+
         String msg = " ";
         Genre genre = null;
 
@@ -35,7 +39,7 @@ public class Controller{
 
         BibliographicProduct book = new Book(id, pagesAmount, name, publishDate, url, review,  genre,  sellPrice);
         products.add(book);
-        msg = "The book has been registered";
+        msg = "The book has been registered, the id is: " + id;
 
         return msg;
     }
@@ -110,6 +114,25 @@ public class Controller{
         return msg;
     }
 
+    public String modifyBookPrice(String productId, double newPrice){
+
+        boolean bookFound = false;
+        String msg = " ";
+
+        for(int i = 0; i < products.size() && !bookFound; i++){
+            BibliographicProduct product = products.get(i);
+            if(product.getId().equals(productId) && product instanceof Book){
+                Book book = (Book) product;
+                bookFound = true;
+                book.setSellPrice(newPrice);
+                msg = "The price has been updated";        
+            }
+        }
+
+        return msg;
+        
+    }
+
     public String modifyMagazineSubPrice(String productId, double newPrice){
 
         boolean magazineFound = false;
@@ -129,6 +152,91 @@ public class Controller{
         return msg;
     }
 
+    public String modifyMagazineEmission(String productId, String newFrequency){
+
+        boolean magazineFound = false;
+        String msg = " ";
+
+        for(int i = 0; i < products.size() && !magazineFound; i++){
+            BibliographicProduct product = products.get(i);
+            if(product.getId().equals(productId) && product instanceof Magazine){
+                Magazine magazine = (Magazine) product;
+                magazineFound = true;
+                magazine.setEmissionFrequency(newFrequency);
+                msg = "The frequency has been uptaded";
+            }
+
+        }
+
+        return msg;
+    }
+
+    public String modifyBookGenre(String productId, int genreFlag){
+
+        boolean bookFound = false;
+        String msg = " ";
+        Genre newGenre = null;
+
+        for(int i = 0; i < products.size() && !bookFound; i++){
+            BibliographicProduct product = products.get(i);
+            if(product.getId().equals(productId) && product instanceof Book){
+                Book book = (Book) product;
+                bookFound = true;
+
+                if(genreFlag == 1){
+
+                    newGenre = Genre.SCIENCE_FICTION;
+                }
+                else if(genreFlag == 2){
+
+                    newGenre = Genre.FANTASY;
+                }
+                else if(genreFlag == 3){
+
+                    newGenre = Genre.HISTORY_NOVEL;
+                }
+
+                book.setGenre(newGenre);
+                msg = "The genre has been updated";
+            }
+        }
+
+        return msg;
+        
+    }
+
+    public String modifyMagazineCategory(String productId, int categoryFlag){
+
+        boolean magazineFound = false;
+        String msg = " ";
+        Category newCategory = null;
+
+        for(int i = 0; i < products.size() && !magazineFound; i++){
+            BibliographicProduct product = products.get(i);
+            if(product.getId().equals(productId) && product instanceof Magazine){
+                Magazine magazine = (Magazine) product;
+                magazineFound = true;
+
+                if(categoryFlag == 1){
+                    newCategory = Category.VARIETIES;
+                }
+                else if(categoryFlag == 2){
+                    newCategory = Category.DESING;
+                }
+                else if(categoryFlag == 3){
+                    newCategory = Category.SCIENCE;
+                }
+
+                magazine.setCategory(newCategory);
+
+                msg = "The frequency has been uptaded";
+            }
+
+        }
+
+        return msg;
+
+    }
 
     public BibliographicProduct getProduct(String productId){
 

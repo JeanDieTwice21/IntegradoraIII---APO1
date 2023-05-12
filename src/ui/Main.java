@@ -26,7 +26,7 @@ public class Main{
             view.executeChoice(choice);
 
 
-        }while(choice != 5);
+        }while(choice != 8);
         
     }
 
@@ -40,7 +40,8 @@ public class Main{
         System.out.println("3. Modify bibliographic product");
         System.out.println("4. Registry user");
         System.out.println("5. Buy a bibliographic product");
-        System.out.println("7. Lecture session");
+        System.out.println("6. Lecture session");
+        System.out.println("7. Init system.");
         System.out.println("8. Exit");
         System.out.println(" ");
         System.out.println("-----------------------------------------");
@@ -65,19 +66,35 @@ public class Main{
             case 3:
             
                 System.out.println("------------------------------");
-                registryUser();
+                modifyBibliographicProduct();
                 break;
             
             case 4:
 
                 System.out.println("-------------------------------");
-                buyBibliographicProduct();
+                registryUser();
                 break;
             
             case 5:
 
                 System.out.println("--------------------------------");
+                buyBibliographicProduct();
                 break;
+            
+            case 6:
+                
+                break;
+            
+            case 7:
+                
+                break;
+            
+            case 8:
+
+                System.out.println("---------------------------------------");
+                System.out.println("Goodbye.");
+                break;
+
 
         }
     }
@@ -85,7 +102,6 @@ public class Main{
     public void registryBibliographicProduct(){
 
         String confirmMsg = " ";
-        String id = " ";
         int pagesAmount = 0;
         String name = " ";
         String publishDate = " ";
@@ -123,7 +139,7 @@ public class Main{
             sellPrice = reader.nextDouble();
 
 
-            confirmMsg = controller.registerBook(id, pagesAmount, name, publishDate, url, review, genreFlag, sellPrice);
+            confirmMsg = controller.registerBook(pagesAmount, name, publishDate, url, review, genreFlag, sellPrice);
             System.out.println(confirmMsg);
         }
         else if(option == 2){
@@ -138,7 +154,7 @@ public class Main{
             System.out.println("Enter the emission frequency: ");
             String emissionFrequency = reader.next();
 
-            confirmMsg = controller.registerMagazine(id, pagesAmount, name, publishDate, url, subscriptionPrice, categoryFlag, emissionFrequency);
+            confirmMsg = controller.registerMagazine(pagesAmount, name, publishDate, url, subscriptionPrice, categoryFlag, emissionFrequency);
             System.out.println(confirmMsg);
 
 
@@ -202,21 +218,24 @@ public class Main{
 
     }
 
-/**
- *     public void modifyBibliographicProduct(){
+
+    public void modifyBibliographicProduct(){
 
         int firstOption = 0;
-        
+        int secondOption = 0;
+        String productId = " ";
+        int thirdOption = 0;
+
         System.out.println("Choose the type of product: ");
         System.out.println("1. Book");
         System.out.println("2. Magazaine");
-        option = reader.nextInt();
+        firstOption = reader.nextInt();
         System.out.println("Enter the id of the product to modify: ");
         productId = reader.next();
 
-        if(option == 1){
+        if(firstOption == 1){
 
-            int secondOption = 0;
+            
             
             do{
                 
@@ -290,7 +309,6 @@ public class Main{
         }
         else if(firstOption == 2){
 
-            int thirdOption = 0;
 
             do{
             
@@ -342,7 +360,7 @@ public class Main{
                     System.out.println("2. Design");
                     System.out.println("3. Science");
                     newCategory = reader.nextInt();
-                    System.out.println(controller.modifyMagazineCategory(productId, newGenre));
+                    System.out.println(controller.modifyMagazineCategory(productId, newCategory));
 
 
                 }
@@ -358,8 +376,8 @@ public class Main{
             }while(thirdOption != 7);
         }
     }
- * 
- */
+  
+ 
 
     public int validateIntegerInput(){
         int option = 0; 
