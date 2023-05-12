@@ -1,4 +1,4 @@
-package ui;
+package model;
 
 public class Magazine extends BibliographicProduct{
 
@@ -14,5 +14,33 @@ public class Magazine extends BibliographicProduct{
         this.subscriptionPrice = subscriptionPrice;
         this.category = category;
         this.emissionFrequency = emissionFrequency;
+    }
+
+    public void setSubPrice(double newPrice){
+
+        this.subscriptionPrice = subscriptionPrice;
+
+    }
+
+    public void setCategory(int newCategory){
+
+        if(newCategory == 1){
+
+            this.category = Category.VARIETIES;
+        }
+        else if(newCategory == 2){
+
+            this.category = Category.DESING;
+
+        }
+        else if(newCategory == 3){
+
+            this.category = Category.SCIENCE;
+        }
+    }
+
+    public void setEmissionFrequency(String newFrequency){
+
+        this.emissionFrequency = newFrequency;
     }
 }

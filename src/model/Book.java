@@ -1,4 +1,4 @@
-package ui;
+package model;
 
 public class Book extends BibliographicProduct{
 
@@ -13,5 +13,31 @@ public class Book extends BibliographicProduct{
         this.review = review;
         this.genre = genre;
         this.sellPrice = sellPrice;
+    }
+
+    public void setReview(String newReview){
+
+        this.review = newReview;
+    }
+
+    public void setSellPrice(double newPrice){
+
+        this.sellPrice = newPrice;
+    }
+
+    public void setGenre(int newGenre){
+
+        if(newGenre == 1){
+
+            this.genre = Genre.SCIENCE_FICTION;
+        }
+        else if(newGenre == 2){
+
+            this.genre = Genre.FANTASY;
+        }
+        else if(newGenre == 3){
+
+            this.genre = Genre.HISTORY_NOVEL;
+        }
     }
 }

@@ -5,14 +5,28 @@ import model.Controller;
 public class Main{
 
     Controller controller;
+    Scanner reader;
 
     public Main(){
 
+        reader = new Scanner(System.in);
         controller = new Controller();
     }
 
     public static void main(String[] args){
 
+        Main view = new Main();
+
+        int choice = 0;
+
+        do{
+            
+            view.menu();
+            choice = view.validateIntegerInput();
+            view.executeChoice(choice);
+
+
+        }while(choice != 5);
         
     }
 
@@ -25,11 +39,10 @@ public class Main{
         System.out.println("2. Delete bibliographic product");
         System.out.println("3. Modify bibliographic product");
         System.out.println("4. Registry user");
-        System.out.println("5. Buy a book");
-        System.out.println("6. Subscribe to a magazine");
+        System.out.println("5. Buy a bibliographic product");
         System.out.println("7. Lecture session");
         System.out.println("8. Exit");
-        System.out.prinlnt(" ");
+        System.out.println(" ");
         System.out.println("-----------------------------------------");
     }
 
@@ -38,6 +51,34 @@ public class Main{
         switch(choice){
 
             case 1:
+
+                System.out.println("------------------------------");
+                registryBibliographicProduct();
+                break;
+            
+            case 2:
+                
+                System.out.println("------------------------------");
+                deleteBibliographicProduct();
+                break;
+            
+            case 3:
+            
+                System.out.println("------------------------------");
+                registryUser();
+                break;
+            
+            case 4:
+
+                System.out.println("-------------------------------");
+                buyBibliographicProduct();
+                break;
+            
+            case 5:
+
+                System.out.println("--------------------------------");
+                break;
+
         }
     }
 
@@ -77,7 +118,7 @@ public class Main{
             System.out.println("1. Science fiction");
             System.out.println("2. Fantasy");
             System.out.println("3. History novel");
-            genreFlag = validateRegisterChoice();
+            genreFlag = reader.nextInt();
             System.out.println("Enter the price: ");
             sellPrice = reader.nextDouble();
 
@@ -131,7 +172,38 @@ public class Main{
 
     }
 
-    public void modifyBibliographicProduct(){
+    public void deleteBibliographicProduct(){
+
+        String productId = " ";
+        String confirmMsg = " ";
+
+        System.out.println("Type the id of the product to delete: ");
+        productId = reader.next();
+
+        confirmMsg = controller.deleteBibliographicProduct(productId);
+
+        System.out.println(confirmMsg);
+    }
+
+    public void buyBibliographicProduct(){
+
+        String productName = " ";
+        String userId = " ";
+        String confirmMsg = " ";
+
+        System.out.println("Type the name of the product to buy: ");
+        productName = reader.next();
+        System.out.println("Type your id: ");
+        userId = reader.next();
+
+        confirmMsg = controller.buyBibliographicProduct(productName, userId);
+
+        System.out.println(confirmMsg);
+
+    }
+
+/**
+ *     public void modifyBibliographicProduct(){
 
         int firstOption = 0;
         
@@ -166,21 +238,21 @@ public class Main{
                     String newName = " ";
                     System.out.println("Enter the new name: ");
                     newName = reader.next();
-                    System.out.println(controller.modifyBibliographicProduct(productId, newName)); 
+                    System.out.println(controller.modifyProductName(productId, newName)); 
                 }
                 else if(secondOption == 2){
 
                     int newPagesAmount = 0;
                     System.out.println("Enter the new pages amount: ");
                     newPagesAmount = reader.nextInt();
-                    System.out.println(controller.modifyBibliographicProduct(productId, newPagesAmount));
+                    System.out.println(controller.modifyProductPages(productId, newPagesAmount));
                 }
                 else if(secondOption == 3){
                     
                     String newDate = " ";
                     System.out.println("Enter the new publish date: ");
                     newDate = reader.next();
-                    System.out.println(controller.modifyBibliographicProduct(productId, newDate));
+                    System.out.println(controller.modifyProductDate(productId, newDate));
 
                 }
                 else if(secondOption == 4){
@@ -189,7 +261,7 @@ public class Main{
                     System.out.println("Enter the new review: ");
                     reader.next();
                     newReview = reader.nextLine();
-                    System.out.println(controller.modifyBibliographicProduct(productId, newReview));
+                    System.out.println(controller.modifyBookReview(productId, newReview));
 
                 }
                 else if(secondOption == 5){
@@ -200,7 +272,7 @@ public class Main{
                     System.out.println("2. Fantasy");
                     System.out.println("3. History novel");
                     newGenre = reader.nextInt();
-                    System.out.println(controller.modifyBibliographicProduct(productId, newGenre));
+                    System.out.println(controller.modifyBookGenre(productId, newGenre));
 
 
                 }
@@ -208,7 +280,8 @@ public class Main{
                     
                     double newPrice = 0;
                     System.out.println("Enter the new price: ");
-                    newPrice = reader.nextDouble(productId, newPrice);
+                    newPrice = reader.nextDouble();
+                    System.out.println(controller.modifyBookPrice(productId, newPrice));
 
                 }
 
@@ -236,21 +309,21 @@ public class Main{
                     String newName = " ";
                     System.out.println("Enter the new name: ");
                     newName = reader.next();
-                    System.out.println(controller.modifyBibliographicProduct(productId, newName)); 
+                    System.out.println(controller.modifyProductName(productId, newName)); 
                 }
                 else if(thirdOption == 2){
 
                     int newPagesAmount = 0;
                     System.out.println("Enter the new pages amount: ");
                     newPagesAmount = reader.nextInt();
-                    System.out.println(controller.modifyBibliographicProduct(productId, newPagesAmount));
+                    System.out.println(controller.modifyProductPages(productId, newPagesAmount));
                 }
                 else if(thirdOption == 3){
                     
                     String newDate = " ";
                     System.out.println("Enter the new publish date: ");
                     newDate = reader.next();
-                    System.out.println(controller.modifyBibliographicProduct(productId, newDate));
+                    System.out.println(controller.modifyProductDate(productId, newDate));
 
                 }
                 else if(thirdOption == 4){
@@ -258,7 +331,7 @@ public class Main{
                     String newFrequency = " ";
                     System.out.println("Enter the new frequency: ");
                     newFrequency = reader.next();
-                    System.out.println(controller.modifyBibliographicProduct(productId, newFrequency));
+                    System.out.println(controller.modifyMagazineEmission(productId, newFrequency));
 
                 }
                 else if(thirdOption == 5){
@@ -269,7 +342,7 @@ public class Main{
                     System.out.println("2. Design");
                     System.out.println("3. Science");
                     newCategory = reader.nextInt();
-                    System.out.println(controller.modifyBibliographicProduct(productId, newGenre));
+                    System.out.println(controller.modifyMagazineCategory(productId, newGenre));
 
 
                 }
@@ -278,65 +351,27 @@ public class Main{
                     double newPrice = 0;
                     System.out.println("Enter the new price: ");
                     newPrice = reader.nextDouble();
-                    System.out.println(controller.modifyBibliographicProduct(productId, newPrice));
+                    System.out.println(controller.modifyMagazineSubPrice(productId, newPrice));
 
                 }
 
             }while(thirdOption != 7);
         }
     }
+ * 
+ */
 
-    public int validateRegisterChoice(){
-    
-        boolean foundValidateInput = false;
-        int choice = 0;
-
+    public int validateIntegerInput(){
+        int option = 0; 
         if(reader.hasNextInt()){
-
-            choice = reader.nextInt();
-
-            if(choice == 1 || choice == 2 || choice ==3){
-
-                return choice;
-
-            }
-            else{
-                
-                reader.next();
-
-                do{
-
-                    System.out.println("Invalid choice!");
-                    System.out.println(" ");
-                    System.out.println("Please, choose a correct option.");
-                    choice = reader.nextInt();
-
-                }while(choice != 1 && choice != 2 && choice != 3);
-
-                
-            
-            }
+            option = reader.nextInt(); 
         }
         else{
-
-            reader.next();
-
-            do{
-
-                System.out.println("That is not a number, please, enter a number: ");
-                boolean flag = reader.hasNextInt();
-                if(flag == true){
-
-                    choice = reader.nextInt();
-                    foundValidateInput = true;
-                }
-                else{
-                    reader.next();
-
-                }
-
-            }while(foundValidateInput != true);
+            reader.nextLine();
+            option = -1; 
+            System.out.println("Enter a valid value."); 
         }
+        return option; 
     }
 
 

@@ -8,8 +8,8 @@ public class Controller{
 
     public Controller(){
         
-        products = new ArrayList<products>();
-        users = new ArrayList<users>();
+        products = new ArrayList<>();
+        users = new ArrayList<>();
 
     }
 
@@ -33,7 +33,7 @@ public class Controller{
             
         }
 
-        BibliographicProduct book = new Book(String id, int pagesAmount, String name, String publishDate, String url, String review, Genre genre, double sellPrice);
+        BibliographicProduct book = new Book(id, pagesAmount, name, publishDate, url, review,  genre,  sellPrice);
         products.add(book);
         msg = "The book has been registered";
 
@@ -61,18 +61,72 @@ public class Controller{
 
     }
 
-    public String modifyBibliographicProduct(String productId, double newPrice){
+    public String modifyProductName(String productId, String newName){
 
         BibliographicProduct product = getProduct(productId);
-        product.setPrice(newPrice);
-        String msg = "Price changed.";
+        String originalName = product.getName();
+        product.setName(newName);
+        String msg = "The name: " + originalName + " was changed to: " + newName;
+
+        return msg;
+
     }
 
-    public String modifyBibliographicProduct(String productId, String newName){
+    public String modifyProductDate(String productId, String newDate){
 
         BibliographicProduct product = getProduct(productId);
-        product.setPrice(newName);
-        String msg = "Name changed.";
+        String originalDate = product.getPublishDate();
+        product.setPublishDate(newDate);
+        String msg = "The publish date " + originalDate + " was changed to: " + newDate;
+
+        return msg;
+    }
+
+    public String modifyProductPages(String productId, int newPagesAmount){
+
+        BibliographicProduct product = getProduct(productId);
+        int originalPagesAmount = product.getPages();
+        product.setPages(newPagesAmount);
+        String msg = "The amount of pages " + originalPagesAmount + " has been changed to " + newPagesAmount;
+
+        return msg;
+    }
+
+    public String modifyBookReview(String productId, String newReview){
+
+        boolean bookFound = false;
+        String msg = " ";
+
+        for(int i = 0; i < products.size() && !bookFound; i++){
+            BibliographicProduct product = products.get(i);
+            if(product.getId().equals(productId) && product instanceof Book){
+                Book book = (Book) product;
+                bookFound = true;
+                book.setReview(newReview);
+                msg = "The review has been updated";        
+            }
+        }
+
+        return msg;
+    }
+
+    public String modifyMagazineSubPrice(String productId, double newPrice){
+
+        boolean magazineFound = false;
+        String msg = " ";
+
+        for(int i = 0; i < products.size() && !magazineFound; i++){
+            BibliographicProduct product = products.get(i);
+            if(product.getId().equals(productId) && product instanceof Magazine){
+                Magazine magazine = (Magazine) product;
+                magazineFound = true;
+                magazine.setSubPrice(newPrice);
+                msg = "The price has been updated";
+            }
+
+        }
+
+        return msg;
     }
 
 
@@ -82,7 +136,7 @@ public class Controller{
         BibliographicProduct product = null;
 
         for(int i = 0; i < products.size() && !productFound; i++){
-            BibliographicProduct product = product.get(i);
+            product = products.get(i);
             if(product.getId().equals(productId)){
 
                 productFound = true;
@@ -93,7 +147,7 @@ public class Controller{
         return product;
     }
 
-    public String registerMagazine(String id, int pagesAmount, String name, String publishDate, String url, int pagesRead, double subscriptionPrice, int categoryFlag, String emissionFrequency){
+    public String registerMagazine(String id, int pagesAmount, String name, String publishDate, String url, double subscriptionPrice, int categoryFlag, String emissionFrequency){
 
         String msg = " ";
         Category category = null;
@@ -114,7 +168,7 @@ public class Controller{
 
         }
 
-        BibliographicProduct magazine = new Magazine(String id, int pagesAmount, String name, String publishDate, String url, double subscriptionPrice, Category category, String emissionFrequency);
+        BibliographicProduct magazine = new Magazine( id, pagesAmount, name,  publishDate,  url,  subscriptionPrice, category, emissionFrequency);
         products.add(magazine);
         msg = "The magazine has been registered";
 
@@ -149,11 +203,12 @@ public class Controller{
         
         String msg = " ";
 
-        boolean prouductFound = false;
+        boolean productFound = false;
+        boolean userFound = false;
 
-        for(int i = 0; i < products.size() && !bookFound; i++){
+        for(int i = 0; i < products.size() && !productFound; i++){
             
-            BibliographicProduct product = producs.get(i);
+            BibliographicProduct product = products.get(i);
             if(product instanceof Book && product.getName().equals(productName)){
 
                 productFound = true;
@@ -162,15 +217,15 @@ public class Controller{
 
                     Users user = users.get(j);
                     if(user instanceof PremiumUser && user.getId().equals(userId)){
-                        
+                        PremiumUser premiumUser = (PremiumUser) user;
                         userFound = true;
-                        user.addProduct(product);
-                        msg = "The book " + productName + "has been bought.":
+                        premiumUser.addProduct(product);
+                        msg = "The book " + productName + "has been bought.";
                     }
                     else if(user instanceof RegularUser && user.getId().equals(userId)){
-
+                        RegularUser regularUser = (RegularUser) user;
                         userFound = true;
-                        msg = user.addBook(product) + productName;
+                        msg = regularUser.addBook(product) + productName;
                         
 
                     }
@@ -185,15 +240,15 @@ public class Controller{
 
                     Users user = users.get(j);
                     if(user instanceof PremiumUser && user.getId().equals(userId)){
-                        
+                        PremiumUser premiumUser = (PremiumUser) user;
                         userFound = true;
-                        user.addProduct(product);
+                        premiumUser.addProduct(product);
                         msg = "You have subscribed to the magazine " + productName; 
                     }
                     else if(user instanceof RegularUser && user.getId().equals(userId)){
-
+                        RegularUser regularUser = (RegularUser) user;
                         userFound = true;
-                        msg = user.addMagazine(product) + productName;
+                        msg = regularUser.addMagazine(product) + productName;
                     }                
             }
 

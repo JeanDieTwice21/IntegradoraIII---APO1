@@ -8,8 +8,20 @@ public abstract class Users{
 
     public Users(String name, String id, String linkDate){
 
-        this.name = name;
-        this.id = id;
+        this.userName = name;
+        this.userId = id;
         this.linkDate = linkDate;
+    }
+
+    public String getName(){
+        return userName;
+    }
+
+    public String getId(){
+        return userId;
+    }
+
+    public String getLinkDate(){
+        return linkDate;
     }
 }

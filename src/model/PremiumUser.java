@@ -1,4 +1,5 @@
 package model;
+import java.util.ArrayList;
 
 public class PremiumUser extends Users{
 
@@ -7,19 +8,7 @@ public class PremiumUser extends Users{
     public PremiumUser(String name, String id, String linkDate){
 
         super(name, id, linkDate);
-        products = new ArrayList<products>();
-    }
-
-    public String getName(){
-        return name;
-    }
-
-    public String getId(){
-        return id;
-    }
-
-    public String getLinkDate(){
-        return linkDate;
+        products = new ArrayList<>();
     }
 
     public void addProduct(BibliographicProduct product){

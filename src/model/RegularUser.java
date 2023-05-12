@@ -1,4 +1,5 @@
 package model;
+import java.util.ArrayList;
 
 public class RegularUser extends Users{
 
@@ -8,22 +9,10 @@ public class RegularUser extends Users{
     public RegularUser(String name, String id, String linkDate){
         
         super(name, id, linkDate);
-        books = new ArrayList<books>(5);
-        magazines = new ArrayList<magazines>(2);
+        books = new ArrayList<>(5);
+        magazines = new ArrayList<>(2);
 
     } 
-
-    public String getName(){
-        return name;
-    }
-
-    public String getId(){
-        return id;
-    }
-
-    public String getLinkDate(){
-        return linkDate;
-    }
 
     public String addBook(BibliographicProduct book){
         String msg = "Array full!";
@@ -50,7 +39,7 @@ public class RegularUser extends Users{
         }
         else{
 
-        magazine.add(magazine);
+            magazines.add(magazine);
             msg = "You have subscribed to the magazine ";
         }
 
