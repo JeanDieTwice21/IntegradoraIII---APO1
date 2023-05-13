@@ -83,6 +83,8 @@ public class Main{
             
             case 6:
                 
+                System.out.println("---------------------------------");
+                simulateLecture();
                 break;
             
             case 7:
@@ -376,7 +378,50 @@ public class Main{
             }while(thirdOption != 7);
         }
     }
-  
+
+
+    public void simulateLecture(){
+
+        String productId = " ";
+        int totalPages = 0;
+        String productName = " ";
+        int startPages = 1;
+        int option = 0;
+
+
+        System.out.println("Enter the id of the product to read: ");
+        productId = reader.next();
+
+        productName =  controller.sendNameForSimulation(productId);
+        totalPages = controller.sendTotalPagesForSimulation(productId);
+
+        do{
+
+            System.out.println("Lecture session in progress: " + "\n");
+            System.out.println("Reading: " + productName);
+            System.out.println(" ");
+            System.out.println(" ");
+            System.out.println("Reading page " + startPages + " of" + totalPages);
+            System.out.println(" ");
+            System.out.println("Enter 1 to move forward.");
+            System.out.println("Enter 2 to move backward.");
+            System.out.println("Enter 3 to finish the lecture.");
+            option = reader.nextInt();
+
+            if(option == 1){
+
+                startPages++;
+            }
+            else if(option == 2){
+
+                startPages--;
+            }
+            
+
+        }while(option != 3 && startPages != totalPages);
+
+
+    }
  
 
     public int validateIntegerInput(){

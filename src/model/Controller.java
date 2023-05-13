@@ -255,8 +255,10 @@ public class Controller{
         return product;
     }
 
-    public String registerMagazine(String id, int pagesAmount, String name, String publishDate, String url, double subscriptionPrice, int categoryFlag, String emissionFrequency){
-
+    public String registerMagazine(int pagesAmount, String name, String publishDate, String url, double subscriptionPrice, int categoryFlag, String emissionFrequency){
+        
+        UUID uuid = UUID.randomUUID();
+        String id = uuid.toString().replaceAll("-", "").substring(0,3);
         String msg = " ";
         Category category = null;
 
@@ -366,6 +368,24 @@ public class Controller{
 
         return msg;
 
+    }
+
+    public int sendTotalPagesForSimulation(String productId){
+
+        int totalPages = 0;
+        BibliographicProduct product = getProduct(productId);
+        totalPages = product.getPages();
+
+        return totalPages;
+    }
+
+    public String sendNameForSimulation(String productId){
+
+        String productName = " ";
+        BibliographicProduct product = getProduct(productId);
+        productName = product.getName();
+
+        return productName;
     }
     
 
