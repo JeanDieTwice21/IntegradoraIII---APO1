@@ -89,6 +89,8 @@ public class Main{
             
             case 7:
                 
+                System.out.println("-----------------------------------");
+                initSystem();
                 break;
             
             case 8:
@@ -421,6 +423,11 @@ public class Main{
         }while(option != 3 && startPages != totalPages);
 
 
+    }
+
+    public void initSystem(){
+
+        System.out.println(controller.initSystem());
     }
  
 

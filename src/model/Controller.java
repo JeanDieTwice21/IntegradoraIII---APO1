@@ -238,6 +238,15 @@ public class Controller{
 
     }
 
+/**
+ * This function searches for a BibliographicProduct object in a list of products by its ID and returns
+ * it.
+ * 
+ * @param productId a String representing the ID of a bibliographic product that needs to be retrieved
+ * from a list of products. The method iterates through the list of products and returns the first
+ * product that matches the given ID. If no product is found, it returns null.
+ * @return The method is returning a BibliographicProduct object.
+ */
     public BibliographicProduct getProduct(String productId){
 
         boolean productFound = false;
@@ -255,6 +264,21 @@ public class Controller{
         return product;
     }
 
+/**
+ * This function registers a new magazine with its properties and adds it to a list of products.
+ * 
+ * @param pagesAmount The number of pages in the magazine.
+ * @param name The name of the magazine being registered.
+ * @param publishDate The date when the magazine was published.
+ * @param url The URL parameter is a string that represents the web address or location of the
+ * magazine, where it can be accessed or downloaded from.
+ * @param subscriptionPrice The price that a customer has to pay to subscribe to the magazine.
+ * @param categoryFlag An integer value representing the category of the magazine being registered.
+ * @param emissionFrequency The frequency at which the magazine is published, such as monthly,
+ * bi-monthly, quarterly, etc.
+ * @return The method is returning a String message indicating whether the magazine has been
+ * successfully registered or not.
+ */
     public String registerMagazine(int pagesAmount, String name, String publishDate, String url, double subscriptionPrice, int categoryFlag, String emissionFrequency){
         
         UUID uuid = UUID.randomUUID();
@@ -285,6 +309,19 @@ public class Controller{
         return msg;
     }
 
+/**
+ * The function registers a user as either a regular or premium user and returns a message indicating
+ * whether the registration was successful or not.
+ * 
+ * @param flag an integer value that determines whether the user being registered is a regular user
+ * (flag = 1) or a premium user (flag = 2).
+ * @param name The name of the user being registered.
+ * @param id The unique identifier for the user being registered.
+ * @param linkDate It is a String variable that represents the date when the user's account was linked
+ * or created.
+ * @return The method is returning a message indicating whether the user was successfully registered as
+ * a regular or premium user.
+ */
     public String registerUser(int flag, String name, String id, String linkDate){
 
         String msg = "User could not be registered";
@@ -309,6 +346,18 @@ public class Controller{
         return msg;
     }
 
+/**
+ * The function allows a user to buy a bibliographic product (book or magazine) and returns a message
+ * indicating whether the purchase was successful or not.
+ * 
+ * @param productName a String representing the name of the bibliographic product (book or magazine)
+ * that the user wants to buy.
+ * @param userId The ID of the user who wants to buy the bibliographic product.
+ * @return The method is returning a String message indicating the result of the operation of buying a
+ * bibliographic product. The message can be "The book [productName] has been bought.", "You have
+ * subscribed to the magazine [productName]", or a message returned by the addBook or addMagazine
+ * method of the RegularUser class.
+ */
     public String buyBibliographicProduct(String productName, String userId){
         
         String msg = " ";
@@ -368,6 +417,32 @@ public class Controller{
 
         return msg;
 
+    }
+
+    public String initSystem(){
+
+        String msg = " ";
+
+        UUID uuid = UUID.randomUUID();
+        String bookId = uuid.toString().replace("-", "").substring(0, 3);
+        String magazineId = uuid.toString().replaceAll("-", "").substring(0,3);
+        Category category = Category.VARIETIES;
+        Genre genre = Category.FANTASY;
+
+        BibliographicProduct book1 = new Book(bookId, 8, "Book1", "01/01/2001", "https//Book1.com", "Filling review",  genre, 1000);
+        BibliographicProduct magazine1 = new Magazine(magazineId, 10, "Magazine1", "01/01/2001", "https/Magazine1.com", 1000, category, "monthly");
+        Users premiumUser = new PremiumUser("Carlos", "9", "02/02/2002");
+        Users regularUser = new RegularUser("Ana", "10", "02/02/2002");
+
+        products.add(book1);
+        products.add(magazine1);
+        users.add(premiumUser);
+        users.add(regularUser);
+
+        msg = "System charged. the id of the objects created are: " + "\n" + "Book: " + bookId + "\n" + "Magazine: " + magazineId + "\n" + "Premium User: 9" + "\n" + "Regular user: 10" + "\n" +  "Use these id for tests.";
+    
+        return msg;
+        
     }
 
     public int sendTotalPagesForSimulation(String productId){
