@@ -13,14 +13,31 @@ public abstract class Users{
         this.linkDate = linkDate;
     }
 
+/**
+ * The function returns the name of the user.
+ * 
+ * @return The method `getName()` is returning the value of the variable `userName`, which is likely a
+ * String representing the name of the user.
+ */
     public String getName(){
         return userName;
     }
 
+/**
+ * The function returns the user ID as a string.
+ * 
+ * @return The method `getId()` is returning the value of the variable `userId`, which is likely a
+ * string representing the user's identification.
+ */
     public String getId(){
         return userId;
     }
 
+/**
+ * The function returns the value of the variable "linkDate".
+ * 
+ * @return The method is returning a String value called "linkDate".
+ */
     public String getLinkDate(){
         return linkDate;
     }

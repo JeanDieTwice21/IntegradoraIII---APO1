@@ -2,10 +2,10 @@ package model;
 
 public class Book extends BibliographicProduct{
 
-    String review;
-    Genre genre;
-    double sellPrice;
-    int soldBooks;
+    private String review;
+    private Genre genre;
+    private double sellPrice;
+    
 
     public Book(String id, int pagesAmount, String name, String publishDate, String url, String review, Genre genre, double sellPrice){
 
@@ -15,16 +15,32 @@ public class Book extends BibliographicProduct{
         this.sellPrice = sellPrice;
     }
 
+/**
+ * This function sets a new value for the "review" variable.
+ * 
+ * @param newReview a String variable that represents the new review to be set for an object. The
+ * method sets the value of the instance variable "review" to the value of the newReview parameter.
+ */
     public void setReview(String newReview){
 
         this.review = newReview;
     }
 
+/**
+ * The function sets the sell price of an object to a new value.
+ * 
+ * @param newPrice The new price that will be set as the sell price for an object.
+ */
     public void setSellPrice(double newPrice){
 
         this.sellPrice = newPrice;
     }
 
+/**
+ * This function sets the genre of an object to a new genre.
+ * 
+ * @param newGenre The new genre that we want to set for an object.
+ */
     public void setGenre(Genre newGenre){
 
         this.genre = newGenre;

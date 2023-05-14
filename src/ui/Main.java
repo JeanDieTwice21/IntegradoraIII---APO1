@@ -4,8 +4,8 @@ import model.Controller;
 
 public class Main{
 
-    Controller controller;
-    Scanner reader;
+    private Controller controller;
+    private Scanner reader;
 
     public Main(){
 
@@ -30,6 +30,9 @@ public class Main{
         
     }
 
+/**
+ * The function displays a menu for a ReadX user with options to perform various actions.
+ */
     public void menu(){
 
         System.out.println("-----------------------------------------");
@@ -47,6 +50,12 @@ public class Main{
         System.out.println("-----------------------------------------");
     }
 
+/**
+ * This function executes a specific action based on the user's choice from a menu.
+ * 
+ * @param choice an integer representing the user's choice from a menu of options. The method executes
+ * a specific action based on the user's choice using a switch statement.
+ */
     public void executeChoice(int choice){
 
         switch(choice){
@@ -103,6 +112,10 @@ public class Main{
         }
     }
 
+/**
+ * This function allows the user to register a book or magazine by inputting various details such as
+ * name, publish date, pages amount, and genre.
+ */
     public void registryBibliographicProduct(){
 
         String confirmMsg = " ";
@@ -166,6 +179,10 @@ public class Main{
 
     }
 
+/**
+ * This function prompts the user to input information about a new user and then registers them using a
+ * controller method.
+ */
     public void registryUser(){
 
         String name = " ";
@@ -192,6 +209,10 @@ public class Main{
 
     }
 
+/**
+ * This function prompts the user to input an ID for a bibliographic product to delete and then
+ * calls a controller function to delete the product.
+ */
     public void deleteBibliographicProduct(){
 
         String productId = " ";
@@ -205,6 +226,10 @@ public class Main{
         System.out.println(confirmMsg);
     }
 
+/**
+ * This function prompts the user to input a product name and user ID, then calls a controller
+ * method to buy the bibliographic product and prints a confirmation message.
+ */
     public void buyBibliographicProduct(){
 
         String productName = " ";
@@ -223,6 +248,10 @@ public class Main{
     }
 
 
+/**
+ * This function allows the user to modify the attributes of a book or magazine product in a library
+ * system.
+ */
     public void modifyBibliographicProduct(){
 
         int firstOption = 0;
@@ -382,6 +411,10 @@ public class Main{
     }
 
 
+/**
+ * This function simulates a lecture by allowing the user to read a product's pages and move forward or
+ * backward until they finish the lecture.
+ */
     public void simulateLecture(){
 
         String productId = " ";
@@ -425,12 +458,21 @@ public class Main{
 
     }
 
+/**
+ * This function initializes the system and prints the result of the initialization process.
+ */
     public void initSystem(){
 
         System.out.println(controller.initSystem());
     }
  
 
+/**
+ * This function validates user input to ensure it is an integer and returns the integer value or -1 if
+ * the input is invalid.
+ * 
+ * @return The method is returning an integer value.
+ */
     public int validateIntegerInput(){
         int option = 0; 
         if(reader.hasNextInt()){

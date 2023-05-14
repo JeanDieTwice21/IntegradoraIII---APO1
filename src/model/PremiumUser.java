@@ -3,7 +3,7 @@ import java.util.ArrayList;
 
 public class PremiumUser extends Users{
 
-    ArrayList<BibliographicProduct> products;
+    private ArrayList<BibliographicProduct> products;
 
     public PremiumUser(String name, String id, String linkDate){
 
@@ -11,6 +11,13 @@ public class PremiumUser extends Users{
         products = new ArrayList<>();
     }
 
+/**
+ * This function adds a BibliographicProduct object to a list of products.
+ * 
+ * @param product The parameter "product" is an object of the class "BibliographicProduct" that is
+ * being passed as an argument to the method "addProduct". This method adds the passed product object
+ * to a collection of products.
+ */
     public void addProduct(BibliographicProduct product){
 
         products.add(product);
