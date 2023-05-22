@@ -48,4 +48,14 @@ public class Magazine extends BibliographicProduct{
 
         this.emissionFrequency = newFrequency;
     }
+
+    public void setActiveSubscription(){
+
+        this.activeSubscriptions += 1;
+    }
+
+    public int getActiveSubscription(){
+
+        return activeSubscriptions;
+    }
 }

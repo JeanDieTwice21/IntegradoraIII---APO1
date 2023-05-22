@@ -44,6 +44,7 @@ public class Main{
         System.out.println("4. Registry user");
         System.out.println("5. Buy a bibliographic product");
         System.out.println("6. Lecture session");
+        System.out.println("7. Get informed about the amount of read pages");
         System.out.println("7. Init system.");
         System.out.println("8. Exit");
         System.out.println(" ");
@@ -446,6 +447,7 @@ public class Main{
             if(option == 1){
 
                 startPages++;
+                controller.modifyReadPages();
             }
             else if(option == 2){
 
@@ -456,6 +458,12 @@ public class Main{
         }while(option != 3 && startPages != totalPages);
 
 
+    }
+
+    public void informPagesRead(){
+
+        System.out.println(controller.informPagesRead());
+        
     }
 
 /**

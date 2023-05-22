@@ -91,6 +91,17 @@ public abstract class BibliographicProduct{
         this.publishDate = newPublishDate;
     }
 
+    public void increaseReadPages(){
+
+        this.pagesRead += 1;
+        
+    }
+
+    public int getReadPages(){
+
+        return pagesRead;
+        
+    }
 
     
 }

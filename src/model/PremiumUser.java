@@ -4,11 +4,13 @@ import java.util.ArrayList;
 public class PremiumUser extends Users{
 
     private ArrayList<BibliographicProduct> products;
+    private String[][] library;
 
     public PremiumUser(String name, String id, String linkDate){
 
         super(name, id, linkDate);
         products = new ArrayList<>();
+        library = new String[][]
     }
 
 /**

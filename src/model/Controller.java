@@ -513,11 +513,13 @@ public class Controller{
                         userFound = true;
                         premiumUser.addProduct(product);
                         msg = "You have subscribed to the magazine " + productName; 
+                        product.setActiveSubscription();
                     }
                     else if(user instanceof RegularUser && user.getId().equals(userId)){
                         RegularUser regularUser = (RegularUser) user;
                         userFound = true;
                         msg = regularUser.addMagazine(product) + productName;
+                        product.setActiveSubscription();
                     }                
             }
 
@@ -593,6 +595,40 @@ public class Controller{
         productName = product.getName();
 
         return productName;
+    }
+
+    public void modifyReadPages(String productId){
+
+        BibliographicProduct product = getProduct(productId);
+
+        product.increaseReadPages();
+
+        
+    }
+
+    
+    public String informPagesRead(){
+        
+        int amountForBook = " ";
+        int amountForMagazine = " ";
+
+        for(int i = 0; i < products.size(); i++){
+            
+            BibliographicProduct product = products.get(i);
+
+            if(product instanceof Book){
+
+                amountForBook += product.getReadPages();
+
+            }
+            else if(product instanceof Magazine){
+
+                amountForMagazine += product.getReadPages();
+            }
+            
+        }
+
+        return "Type: Book." + "\n" + "Total read pages: " + amountForBook + "\n" + "Type: Magazine." + "\n" + "Total read pages: " + amountForMagazine;
     }
     
 
