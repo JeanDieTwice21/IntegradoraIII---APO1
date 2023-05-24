@@ -1,15 +1,17 @@
 package model;
+import java.util.Calendar;
+import java.util.SimpleDateFormat;
 
 public abstract class BibliographicProduct{
 
     private String productId;
     private String productName;
     private int pagesAmount;
-    private String publishDate;
+    private Calendar publishDate;
     private String url;
     private int pagesRead;
 
-    public BibliographicProduct(String id, int pagesAmount, String name, String publishDate, String url){
+    public BibliographicProduct(String id, int pagesAmount, String name, Calendar publishDate, String url){
         
         this.productId = id;
         this.productName = name;
@@ -43,7 +45,7 @@ public abstract class BibliographicProduct{
  * 
  * @return The method is returning a String value, which is the publish date.
  */
-    public String getPublishDate(){
+    public Calendar getPublishDate(){
 
         return publishDate;
     }

@@ -1,4 +1,6 @@
 package model;
+import java.util.Calendar;
+import java.util.SimpleDateFormat;
 
 public class Magazine extends BibliographicProduct{
 
@@ -6,9 +8,10 @@ public class Magazine extends BibliographicProduct{
     private Category category;
     private String emissionFrequency;
     private int activeSubscriptions;
+    private double subscriptionSales;
 
 
-    public Magazine(String id, int pagesAmount, String name, String publishDate, String url, double subscriptionPrice, Category category, String emissionFrequency){
+    public Magazine(String id, int pagesAmount, String name, Calendar publishDate, String url, double subscriptionPrice, Category category, String emissionFrequency){
 
         super(id, pagesAmount, name, publishDate, url);
         this.subscriptionPrice = subscriptionPrice;
@@ -58,4 +61,11 @@ public class Magazine extends BibliographicProduct{
 
         return activeSubscriptions;
     }
+
+    public Category getCategory(){
+
+        return category;
+    }
+
+    public double 
 }

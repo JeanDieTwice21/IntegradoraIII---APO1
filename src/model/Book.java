@@ -1,13 +1,18 @@
 package model;
+import java.util.Calendar;
+import java.util.SimpleDateFormat;
+
 
 public class Book extends BibliographicProduct{
 
     private String review;
     private Genre genre;
     private double sellPrice;
+    private double sales;
+    private int soldBooks;
     
 
-    public Book(String id, int pagesAmount, String name, String publishDate, String url, String review, Genre genre, double sellPrice){
+    public Book(String id, int pagesAmount, String name, Calendar publishDate, String url, String review, Genre genre, double sellPrice){
 
         super(id, pagesAmount, name, publishDate, url);
         this.review = review;
@@ -44,6 +49,22 @@ public class Book extends BibliographicProduct{
     public void setGenre(Genre newGenre){
 
         this.genre = newGenre;
+    }
+
+    public Genre getGenre(){
+
+        return genre;
+    }
+
+    public double getSales(){
+
+        return sales;
+    }
+
+    public int getSoldBooks(){
+
+        return soldBooks;
+        
     }
 
 

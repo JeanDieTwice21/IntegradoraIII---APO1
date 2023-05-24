@@ -1,6 +1,9 @@
 package model;
 import java.util.ArrayList;
 import java.util.UUID;
+import java.util.Random;
+import java.util.Calendar;
+import java.text.SimpleDateFormat;
 
 public class Controller{
 
@@ -29,10 +32,11 @@ public class Controller{
  * @return The method is returning a message indicating that the book has been registered and providing
  * its ID.
  */
-    public String registerBook(int pagesAmount, String name, String publishDate, String url, String review, int genreFlag, double sellPrice){
+    public String registerBook(int pagesAmount, String name, String publishDateStr, String url, String review, int genreFlag, double sellPrice){
         
         UUID uuid = UUID.randomUUID();
         String id = uuid.toString().replace("-", "").substring(0, 3);
+        Calendar publishDate = stringsToCalendar(publishDateStr);
 
         String msg = " ";
         Genre genre = null;
@@ -120,8 +124,9 @@ public class Controller{
  * @return The method is returning a message that indicates the original publish date of a product has
  * been changed to a new date. The message includes both the original date and the new date.
  */
-    public String modifyProductDate(String productId, String newDate){
-
+    public String modifyProductDate(String productId, String newDateStr){
+        
+        Calendar newDate = stringsToCalendar(newDateStr);
         BibliographicProduct product = getProduct(productId);
         String originalDate = product.getPublishDate();
         product.setPublishDate(newDate);
@@ -388,12 +393,13 @@ public class Controller{
  * @return The method is returning a String message indicating whether the magazine has been
  * successfully registered or not.
  */
-    public String registerMagazine(int pagesAmount, String name, String publishDate, String url, double subscriptionPrice, int categoryFlag, String emissionFrequency){
+    public String registerMagazine(int pagesAmount, String name, String publishDateStr, String url, double subscriptionPrice, int categoryFlag, String emissionFrequency){
         
         UUID uuid = UUID.randomUUID();
         String id = uuid.toString().replaceAll("[^a-zA-Z0-9]", "").substring(0, 3);
         String msg = " ";
         Category category = null;
+        Calendar publishDate = stringsToCalendar(publishDateStr);
 
         if(categoryFlag == 1){
         
@@ -485,6 +491,7 @@ public class Controller{
                 for(int j = 0; j < users.size() && !userFound; j++){
 
                     Users user = users.get(j);
+                    
                     if(user instanceof PremiumUser && user.getId().equals(userId)){
                         PremiumUser premiumUser = (PremiumUser) user;
                         userFound = true;
@@ -549,8 +556,10 @@ public class Controller{
         Category category = Category.VARIETIES;
         Genre genre = Genre.FANTASY;
 
-        BibliographicProduct book1 = new Book(bookId, 8, "Book1", "01/01/2001", "https//Book1.com", "Filling review",  genre, 1000);
-        BibliographicProduct magazine1 = new Magazine(magazineId, 10, "Magazine1", "01/01/2001", "https/Magazine1.com", 1000, category, "monthly");
+        Calendar date = stringsToCalendar("01/01/2001");
+
+        BibliographicProduct book1 = new Book(bookId, 8, "Book1", date, "https//Book1.com", "Filling review",  genre, 1000);
+        BibliographicProduct magazine1 = new Magazine(magazineId, 10, "Magazine1", date, "https/Magazine1.com", 1000, category, "monthly");
         Users premiumUser = new PremiumUser("Carlos", "9", "02/02/2002");
         Users regularUser = new RegularUser("Ana", "10", "02/02/2002");
 
@@ -631,5 +640,141 @@ public class Controller{
         return "Type: Book." + "\n" + "Total read pages: " + amountForBook + "\n" + "Type: Magazine." + "\n" + "Total read pages: " + amountForMagazine;
     }
     
+    public boolean knowTypeOfProduct(String productId){
+
+        boolean isBook = false;
+
+        BibliographicProduct product = getProduct(productId);
+
+        if(product instanceof Book){
+
+            isBook = true;
+
+        }
+        else if(product instanceof Magazine){
+
+            isBook = false;
+
+        }
+
+        return isBook;
+    }
+
+    public String showAds(){
+
+        String[] ads = {"Subscribe to Combo Plus and get Disney+ and Star+ at an incredible price!", "Now your pets have a favorite app: Laika. The best products for your furry friend.", "It's our anniversary! Visit your nearest Éxito and be surprised with the best offers."}
+        int randomIndex = random.nextInt(ads.length);
+
+        return ads[randomIndex];
+
+    }
+
+    public String informCategoriesStats(){
+
+        int varietiesSubscriptions = 0;
+        int desingSubscriptions = 0;
+        int sciencieSubscriptions = 0;
+        double varietiesSales = 0;
+        double desingSales = 0;
+        double scienceSales = 0;
+
+        for(int i = 0; i < products.size(); i++){
+
+            BibliographicProduct producgt = products.get(i);
+
+            if(products instanceof Magazine){
+                
+                Magazine magazine = (Magazine) product;
+                Category magazineCategory = magazine.getCategory();
+
+                if(magazineCategory == Category.VARIETIES){
+
+                    varietiesSubscriptions += magazine.getActiveSubscription();
+                    varietiesSales += magazine.getSubSales();
+                }
+                else if(magazineCategory == Category.DESING){
+                    
+                    desingSubscriptions += magazine.getActiveSubscription();
+                    desingSales += magazine.getSubSales();
+
+                }
+                else if(magazineCategory == Category.SCIENCE){
+
+                    sciencieSubscriptions += magazine.getActiveSubscription();
+                    scienceSales += magazine.getSubSales();
+
+                }
+
+            }
+        }
+
+        String msg1 = "Category: Varieties. " + "\nActive subscriptions: " + varietiesSubscriptions + "\nTotal sales: " + varietiesSales;
+        String msg2 = "Category: Desing. " + "\nActive subscriptions: " + desingSubscriptions + "\nTotal sales: " + desingSales;
+        String msg3 = "Category: Science. " + "\nActive subscriptions: " + sciencieSubscriptions + "\nTotal sales: " + scienceSales;
+
+        return msg1 + "\n" + msg2 + "\n" + msg3;
+
+    }
+
+    public String informGenresStats(){
+
+        int scienceFictionSoldBooks = 0;
+        int fantasySoldBooks = 0;
+        int historyNovelSoldBooks = 0;
+        double scienceFictionSales = 0;
+        double fantasySales = 0;
+        double historyNovelSales = 0;
+
+        for(int i = 0; i < products.size(); i++){
+
+            BibliographicProduct producgt = products.get(i);
+
+            if(products instanceof Book){
+                
+                Book book = (Book) product;
+                Genre bookGenre = book.getGenre();
+
+                if(bookGenre == Genre.SCIENCE_FICTION){
+
+                    scienceFictionSoldBooks += book.getSoldBooks();
+                    scienceFictionSales += book.getSales();
+                }
+                else if(bookGenre == Genre.FANTASY){
+                    
+                    fantasySoldBooks += magazine.getSoldBooks();
+                    fantasySales += book.getSales();
+
+                }
+                else if(bookGenre == Genre.HISTORY_NOVEL){
+
+                    historyNovelSoldBooks += book.getSoldBooks();
+                    historyNovelSales += book.getSales();
+
+                }
+
+            }
+        }
+
+        String msg1 = "Genre: Science fiction. " + "\nSold books: " + scienceFictionSoldBooks + "\nTotal sales: " + scienceFictionSales;
+        String msg2 = "Genre: Fantasy. " + "\nSold books: " + fantasySoldBooks + "\nTotal sales: " + fantasySales;
+        String msg3 = "Genre: History novel. " + "\nSold books: " + historyNovelSoldBooks + "\nTotal sales: " + historyNovelSales;
+
+        return msg1 + "\n" + msg2 + "\n" + msg3;
+
+    }
+
+
+
+    public Calendar stringsToCalendar(String date) throws Exception{
+        
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+
+        Calendar newDate = Calendar.getInstance();
+        newDate.setTime(formatter.parse(date));
+
+        return newDate; 
+    }
+
+
 
 }
