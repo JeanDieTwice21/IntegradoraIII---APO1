@@ -67,5 +67,18 @@ public class Magazine extends BibliographicProduct{
         return category;
     }
 
-    public double 
+    public double getSubSales(){
+
+        return subscriptionSales;
+    }
+
+    public double getSubPrice(){
+
+        return subscriptionPrice;
+    }
+
+    public void setSubSales(double sale){
+
+        subscriptionSales += sale;
+    }
 }

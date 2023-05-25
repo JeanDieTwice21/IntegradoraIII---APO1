@@ -10,6 +10,7 @@ public class Controller{
     private ArrayList<BibliographicProduct> products;
     private ArrayList<Users> users;
 
+
     public Controller(){
         
         products = new ArrayList<>();
@@ -461,30 +462,91 @@ public class Controller{
         return msg;
     }
 
+
 /**
- * The function allows a user to buy a bibliographic product (book or magazine) and returns a message
- * indicating whether the purchase was successful or not.
+ * The function allows a user to buy a book by searching for the book in a list of products and adding
+ * it to the user's account.
  * 
- * @param productName a String representing the name of the bibliographic product (book or magazine)
- * that the user wants to buy.
- * @param userId The ID of the user who wants to buy the bibliographic product.
- * @return The method is returning a String message indicating the result of the operation of buying a
- * bibliographic product. The message can be "The book [productName] has been bought.", "You have
- * subscribed to the magazine [productName]", or a message returned by the addBook or addMagazine
- * method of the RegularUser class.
+ * @param productName The name of the book that the user wants to buy.
+ * @param userId The ID of the user who wants to buy the book.
+ * @return The method is returning a message indicating whether the book was successfully bought or
+ * not. 
  */
-    public String buyBibliographicProduct(String productName, String userId){
+    public String buyBook(String productName, String userId){
         
 
         boolean productFound = false;
         boolean userFound = false;
+        String msg = " ";
+        double bookPrice = 0;
 
+        for(int i = 0; i < products.size() && !productFound; i++){
+            
+            BibliographicProduct product = products.get(i);
+
+            if(product instanceof Book && product.getName().equals(productName)){
+
+                productFound = true;
+
+                for(int j = 0; j < users.size() && !userFound; j++){
+
+                    Users user = users.get(j);
+                    
+                    if(user instanceof PremiumUser && user.getId().equals(userId)){
+
+                        PremiumUser premiumUser = (PremiumUser) user;
+                        userFound = true;
+                        premiumUser.addProduct(product);
+                        Book book = (Book) product;
+                        book.increaseSoldBooks();
+                        bookPrice = book.getPrice();
+                        book.increaseSales(bookPrice);
+
+                        msg = "The book " + productName + "has been bought.";
+                    }
+                    else if(user instanceof RegularUser && user.getId().equals(userId)){
+
+                        RegularUser regularUser = (RegularUser) user;
+                        userFound = true;
+                        msg = regularUser.addBook(product) + productName;
+                        Book book = (Book) product;
+                        book.increaseSoldBooks();
+                        bookPrice = book.getPrice();
+                        book.increaseSales(bookPrice);
+                        
+                    }
+                }
+                
+            }
+
+        }
+
+        return msg;
+
+    }
+
+/**
+ * The function allows a user to buy a magazine by checking if the product and user exist, and adding
+ * the magazine to the user's account.
+ * 
+ * @param productName The name of the magazine that the user wants to buy.
+ * @param userId The ID of the user who wants to buy the magazine.
+ * @return The method is returning a message (String) indicating whether the user has successfully
+ * subscribed to the magazine or not.
+ */
+    public String buyMagazine(String productName, String userId){
+        
+
+        boolean productFound = false;
+        boolean userFound = false;
+        double subscriptionPrice = 0;
         String msg = " ";
 
         for(int i = 0; i < products.size() && !productFound; i++){
             
             BibliographicProduct product = products.get(i);
-            if(product instanceof Book && product.getName().equals(productName)){
+
+            if(product instanceof Magazine && product.getName().equals(productName)){
 
                 productFound = true;
 
@@ -496,41 +558,23 @@ public class Controller{
                         PremiumUser premiumUser = (PremiumUser) user;
                         userFound = true;
                         premiumUser.addProduct(product);
-                        msg = "The book " + productName + "has been bought.";
+                        msg = "You have subscribed to magazine " + productName;
+                        Magazine magazine = (Magazine) product;
+                        magazine.setActiveSubscription();
+                        subscriptionPrice = magazine.getSubPrice();
                     }
                     else if(user instanceof RegularUser && user.getId().equals(userId)){
                         RegularUser regularUser = (RegularUser) user;
                         userFound = true;
-                        msg = regularUser.addBook(product) + productName;
+                        msg = regularUser.addMagazine(product) + productName;
+                        Magazine magazine = (Magazine) product;
+                        magazine.setActiveSubscription();
                         
 
                     }
                 }
                 
             }
-            else if(product instanceof Magazine && product.getName().equals(productName)){
-
-                productFound = true;
-
-                for(int j = 0; j < users.size() && !userFound; j++){
-
-                    Users user = users.get(j);
-                    if(user instanceof PremiumUser && user.getId().equals(userId)){
-                        PremiumUser premiumUser = (PremiumUser) user;
-                        userFound = true;
-                        premiumUser.addProduct(product);
-                        msg = "You have subscribed to the magazine " + productName; 
-                        product.setActiveSubscription();
-                    }
-                    else if(user instanceof RegularUser && user.getId().equals(userId)){
-                        RegularUser regularUser = (RegularUser) user;
-                        userFound = true;
-                        msg = regularUser.addMagazine(product) + productName;
-                        product.setActiveSubscription();
-                    }                
-            }
-
-        }
 
         }
 
@@ -606,6 +650,11 @@ public class Controller{
         return productName;
     }
 
+/**
+ * This function modifies the number of read pages for a given product.
+ * 
+ * @param productId a String representing the unique identifier of a bibliographic product.
+ */
     public void modifyReadPages(String productId){
 
         BibliographicProduct product = getProduct(productId);
@@ -616,6 +665,13 @@ public class Controller{
     }
 
     
+/**
+ * The function calculates the total number of pages read for books and magazines in a list of
+ * bibliographic products and returns the result as a formatted string.
+ * 
+ * @return A string containing the total number of pages read for books and magazines in the products
+ * list.
+ */
     public String informPagesRead(){
         
         int amountForBook = " ";
@@ -640,6 +696,12 @@ public class Controller{
         return "Type: Book." + "\n" + "Total read pages: " + amountForBook + "\n" + "Type: Magazine." + "\n" + "Total read pages: " + amountForMagazine;
     }
     
+/**
+ * The function determines whether a product is a book or not based on its type.
+ * 
+ * @param productId a String representing the unique identifier of a product.
+ * @return A boolean value indicating whether the product with the given ID is a book or not.
+ */
     public boolean knowTypeOfProduct(String productId){
 
         boolean isBook = false;
@@ -660,6 +722,11 @@ public class Controller{
         return isBook;
     }
 
+/**
+ * The function returns a randomly selected advertisement from a list of three options.
+ * 
+ * @return A randomly selected advertisement from the array of ads.
+ */
     public String showAds(){
 
         String[] ads = {"Subscribe to Combo Plus and get Disney+ and Star+ at an incredible price!", "Now your pets have a favorite app: Laika. The best products for your furry friend.", "It's our anniversary! Visit your nearest Éxito and be surprised with the best offers."}
@@ -669,6 +736,13 @@ public class Controller{
 
     }
 
+/**
+ * The function calculates and returns the active subscrpitons and the total sales for the different categories of magazines in the
+ * product list.
+ * 
+ * @return The method is returning a String with the statistics of the active subscriptions and total
+ * sales for each category of magazines: Varieties, Design, and Science.
+ */
     public String informCategoriesStats(){
 
         int varietiesSubscriptions = 0;
@@ -716,6 +790,13 @@ public class Controller{
 
     }
 
+/**
+ * The function calculates and returns the sales and number of sold books for each genre of books in
+ * the products list.
+ * 
+ * @return The method is returning a String that contains the statistics for the sales and sold books
+ * of three different genres: science fiction, fantasy, and history novel.
+ */
     public String informGenresStats(){
 
         int scienceFictionSoldBooks = 0;
@@ -764,7 +845,102 @@ public class Controller{
     }
 
 
+/**
+ * The function returns the most read genre and category along with the total pages read for each.
+ * 
+ * @return The method is returning a string that contains information about the most read genre and
+ * category, along with the total number of pages read for each.
+ */
+    public String informMostReadGenreAndCategory(){
 
+        int maxPagesReadGenre = 0;
+        int maxPagesReadCategory = 0;
+        int pagesReadGenre = 0;
+        int pagesReadCategory = 0;
+        Genre mostReadGenre = null;
+        Category mostReadCategory = null:
+
+        for(int i = 0; i < products.size(); i++){
+
+            BibliographicProduct product = products.get(i);
+
+            if(product instanceof Book){
+
+                Book book = (Book) product;
+                pagesReadGenre = book.getReadPages();
+
+                if(pagesReadGenre > maxPagesReadGenre){
+
+                    maxPagesReadGenre = pagesReadGenre;
+                    mostReadGenre = book.getGenre();
+                }
+
+            }
+        }
+
+        for(int j = 0; j products.size(); j++){
+
+            BibliographicProduct product = products.get(j);
+
+            if(product instanceof Magazine){
+
+                Magazine magazine = (Magazine) product;
+                pagesReadCategory = magazine.getReadPages();
+
+                if(pagesReadCategory > maxPagesReadCategory){
+                    
+                    maxPagesReadCategory = pagesReadCategory;
+                    mostReadCategory = magazine.getCategory();
+
+                }
+            }
+        }
+
+        return "Most read genre: " + mostReadGenre + "\nTotal pages: " + maxPagesReadGenre + "\nMost read category: " + mostReadCategory + "\nTotal pages: " + maxPagesReadCategory;
+
+    }
+
+/**
+ * The function checks if a user is a premium user or a regular user based on their user ID.
+ * 
+ * @param userId A String representing the ID of the user whose type needs to be checked.
+ * @return A boolean value indicating whether the user with the given ID is a premium user or not.
+ */
+
+    public boolean checkTypeOfUser(String userId){
+
+        boolean completed = false;
+        boolean isPremium = false;
+
+        for(int = 0; i < users.size(); i++){
+            
+            Users user = users.get(i);
+
+            if(user instanceof PremiumUser && user.getId().equals(userId)){
+
+                isPremium = true;
+                completed = true;
+
+            }
+            else if(user instanceof RegularUser && user.getId().equals(userId)){
+
+                isPremium = false;
+                completed = true;
+
+            }
+        }
+
+        return isPremium;
+    }
+
+
+
+/**
+ * The function converts a string date in the format "dd/MM/yyyy" to a Calendar object.
+ * 
+ * @param date The date parameter is a string representing a date in the format "dd/MM/yyyy".
+ * @return A Calendar object is being returned.
+ */
     public Calendar stringsToCalendar(String date) throws Exception{
         
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");

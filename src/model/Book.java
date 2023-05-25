@@ -20,6 +20,18 @@ public class Book extends BibliographicProduct{
         this.sellPrice = sellPrice;
     }
 
+
+
+    public void increaseSoldBooks(){
+
+        this.soldBooks += 1;
+    }
+
+    public void increaseSales(double sale){
+
+        sales += sale;
+    }
+
 /**
  * This function sets a new value for the "review" variable.
  * 
@@ -67,5 +79,10 @@ public class Book extends BibliographicProduct{
         
     }
 
+    public double getPrice(){
+
+        return sellPrice;
+
+    }
 
 }

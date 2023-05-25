@@ -236,13 +236,26 @@ public class Main{
         String productName = " ";
         String userId = " ";
         String confirmMsg = " ";
+        int option = 0;
 
-        System.out.println("Type the name of the product to buy: ");
+        System.out.println("What do you want to buy?: ");
+        System.out.println("1. A book");
+        System.out.println("2. A magazine");
+        option = reader.next();
+        System.out.println("Type the name of the product.");
         productName = reader.next();
         System.out.println("Type your id: ");
         userId = reader.next();
 
-        confirmMsg = controller.buyBibliographicProduct(productName, userId);
+        if(option == 1){
+
+            confirmMsg = controller.buyBook(productName, userId);
+        }
+        else if(option == 2){
+
+            confirmMsg = controller.buyMagazine(productName, userId);
+        }
+        
 
         System.out.println(confirmMsg);
 
@@ -416,7 +429,7 @@ public class Main{
  * This function simulates a lecture by allowing the user to read a product's pages and move forward or
  * backward until they finish the lecture.
  */
-    public void simulateLecture(){
+    public void simulateLecture(String userId){
 
         String productId = " ";
         int totalPages = 0;
@@ -425,6 +438,7 @@ public class Main{
         int option = 0;
         boolean adsFlag;
         int showAds = 0;
+        boolean isPremiumUser = false;
 
         System.out.println("Enter the id of the product to read: ");
         productId = reader.next();
@@ -432,35 +446,111 @@ public class Main{
         productName =  controller.sendNameForSimulation(productId);
         totalPages = controller.sendTotalPagesForSimulation(productId);
         adsFlag = controller.knowTypeOfProduct(productId);
+        isPremiumUser = controller.checkTypeOfUser(userId);
 
 
-        if(adsFlag == true){
+        if(isPremiumUser == false){
 
-            do{
+            if(adsFlag == true){
+
+                do{
                 
-                if(showAds%5 == 0){
+                    if(showAds%5 == 0){
                     
-                    System.out.println("---------------------");
-                    System.out.println(controller.showAds());
-                    System.out.println("--------------------");
-                    System.out.println(" ");
-                }
+                        System.out.println("---------------------");
+                        System.out.println(controller.showAds());
+                        System.out.println("--------------------");
+                        System.out.println(" ");
+                    }
 
-                System.out.println("Lecture session in progress: " + "\n");
-                System.out.println("Reading: " + productName);
-                System.out.println(" ");
-                System.out.println(" ");
-                System.out.println("Reading page " + startPages + " of" + totalPages);
-                System.out.println(" ");
-                System.out.println("Enter 1 to move forward.");
-                System.out.println("Enter 2 to move backward.");
-                System.out.println("Enter 3 to finish the lecture.");
-                option = reader.nextInt();
+                    System.out.println("Lecture session in progress: " + "\n");
+                    System.out.println("Reading: " + productName);
+                    System.out.println(" ");
+                    System.out.println(" ");
+                    System.out.println("Reading page " + startPages + " of" + totalPages);
+                    System.out.println(" ");
+                    System.out.println("Enter 1 to move forward.");
+                    System.out.println("Enter 2 to move backward.");
+                    System.out.println("Enter 3 to finish the lecture.");
+                    option = reader.nextInt();
+
+                    if(option == 1){
+
+                        startPages++;
+                        showAds++;
+                        controller.modifyReadPages(productId);
+                    }
+                    else if(option == 2){
+
+                        startPages--;
+                    }
+            
+
+                }while(option != 3 && startPages != totalPages);
+            
+            }
+            else if(adsFlag == false){
+
+                do{
+
+                    if(showAds%20 == 0){
+
+                        System.out.println("---------------------");
+                        System.out.println(controller.showAds());
+                        System.out.println("--------------------");
+                        System.out.println(" ");
+
+                    }
+
+                    System.out.println("Lecture session in progress: " + "\n");
+                    System.out.println("Reading: " + productName);
+                    System.out.println(" ");
+                    System.out.println(" ");
+                    System.out.println("Reading page " + startPages + " of" + totalPages);
+                    System.out.println(" ");
+                    System.out.println("Enter 1 to move forward.");
+                    System.out.println("Enter 2 to move backward.");
+                    System.out.println("Enter 3 to finish the lecture.");
+                    option = reader.nextInt();
+
+                    if(option == 1){
+
+                        startPages++;
+                        showAds++;
+                        controller.modifyReadPages(productId);
+                    }
+                    else if(option == 2){
+
+                        startPages--;
+                    }
+
+
+                }while(option != 3 && startPages != totalPages);
+
+
+            }
+
+        }
+        else{
+
+            if(adsFlag == true){
+
+                do{
+                
+                    System.out.println("Lecture session in progress: " + "\n");
+                    System.out.println("Reading: " + productName);
+                    System.out.println(" ");
+                    System.out.println(" ");
+                    System.out.println("Reading page " + startPages + " of" + totalPages);
+                    System.out.println(" ");
+                    System.out.println("Enter 1 to move forward.");
+                    System.out.println("Enter 2 to move backward.");
+                    System.out.println("Enter 3 to finish the lecture.");
+                    option = reader.nextInt();
 
                 if(option == 1){
 
                     startPages++;
-                    showAds++;
                     controller.modifyReadPages(productId);
                 }
                 else if(option == 2){
@@ -471,19 +561,11 @@ public class Main{
 
             }while(option != 3 && startPages != totalPages);
             
-        }
-        else if(adsFlag == false){
+            }
+            else if(adsFlag == false){
 
             do{
 
-                if(showAds%20 == 0){
-
-                    System.out.println("---------------------");
-                    System.out.println(controller.showAds());
-                    System.out.println("--------------------");
-                    System.out.println(" ");
-
-                }
 
                 System.out.println("Lecture session in progress: " + "\n");
                 System.out.println("Reading: " + productName);
@@ -499,7 +581,6 @@ public class Main{
                 if(option == 1){
 
                     startPages++;
-                    showAds++;
                     controller.modifyReadPages(productId);
                 }
                 else if(option == 2){
@@ -511,6 +592,7 @@ public class Main{
             }while(option != 3 && startPages != totalPages);
 
 
+            }
         }
 
     }
