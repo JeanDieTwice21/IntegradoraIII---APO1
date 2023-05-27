@@ -647,7 +647,7 @@ public class Main{
             System.out.println(" ");
             System.out.println(userName + " Library");
             System.out.println(" ");
-            System.out.println("0 " + " 1 " + " 2 " + " 3 " + " 4");
+            System.out.println("  0  " + "  1  " + "  2  " + "  3  " + "  4 ");
             System.out.println(controller.showUserLibrary(userId, actualPage));
             System.out.println(" ");
             System.out.println("0. Simulate a lecture");
