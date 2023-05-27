@@ -15,6 +15,19 @@ public class RegularUser extends Users{
     } 
 
     
+/**
+ * The function adds a bibliographic product to either a list of books or magazines, depending on a
+ * flag value, and returns a message indicating success or failure.
+ * 
+ * @param product A BibliographicProduct object representing the product to be added (either a book or
+ * a magazine).
+ * @param flag An integer flag that determines whether the product being added is a book or a magazine.
+ * If flag is 1, it means the product is a book. If flag is 2, it means the product is a magazine.
+ * @return The method `addProduct` returns a message indicating whether the product was successfully
+ * added or not. If the product was added, the message will say "You have bought the book" or "You have
+ * subscribed to the magazine" depending on the value of the `flag` parameter. If the array is full and
+ * the product cannot be added, the message will say "Array full!".
+ */
     public String addProduct(BibliographicProduct product, int flag){
 
         
@@ -51,6 +64,25 @@ public class RegularUser extends Users{
         return msg;
     }
 
+/**
+ * The function returns an ArrayList of BibliographicProduct objects representing books.
+ * 
+ * @return An ArrayList of BibliographicProduct objects named "books".
+ */
+    public ArrayList<BibliographicProduct> getBooks(){
+
+        return books;
+    }
+
+/**
+ * The function returns an ArrayList of BibliographicProduct objects representing magazines.
+ * 
+ * @return An ArrayList of BibliographicProduct objects named "magazines".
+ */
+    public ArrayList<BibliographicProduct> getMagazines(){
+
+        return magazines;
+    }
 
 
 

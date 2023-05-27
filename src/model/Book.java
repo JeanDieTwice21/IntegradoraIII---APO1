@@ -22,11 +22,19 @@ public class Book extends BibliographicProduct{
 
 
 
+/**
+ * This function increases the number of sold books by 1.
+ */
     public void increaseSoldBooks(){
 
         this.soldBooks += 1;
     }
 
+/**
+ * The function increases the value of a sales variable by a given amount.
+ * 
+ * @param sale a double value representing the amount by which the sales are to be increased.
+ */
     public void increaseSales(double sale){
 
         sales += sale;
@@ -63,22 +71,43 @@ public class Book extends BibliographicProduct{
         this.genre = newGenre;
     }
 
+/**
+ * The function returns the genre of a media object.
+ * 
+ * @return The method is returning an object of the `Genre` class.
+ */
     public Genre getGenre(){
 
         return genre;
     }
 
+/**
+ * The function returns the value of the sales variable as a double.
+ * 
+ * @return The method is returning a double value, which is the value of the variable "sales".
+ */
     public double getSales(){
 
         return sales;
     }
 
+/**
+ * The function returns the number of sold books.
+ * 
+ * @return The method is returning an integer value representing the number of sold books.
+ */
     public int getSoldBooks(){
 
         return soldBooks;
         
     }
 
+/**
+ * The getPrice() function returns the sell price as a double.
+ * 
+ * @return The method `getPrice()` is returning the value of the `sellPrice` variable, which is of type
+ * `double`.
+ */
     public double getPrice(){
 
         return sellPrice;

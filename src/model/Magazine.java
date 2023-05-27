@@ -52,31 +52,60 @@ public class Magazine extends BibliographicProduct{
         this.emissionFrequency = newFrequency;
     }
 
+/**
+ * The function increments the number of active subscriptions by 1.
+ */
     public void setActiveSubscription(){
 
         this.activeSubscriptions += 1;
     }
 
+/**
+ * The function returns the number of active subscriptions.
+ * 
+ * @return The method is returning the value of the variable "activeSubscriptions".
+ */
     public int getActiveSubscription(){
 
         return activeSubscriptions;
     }
 
+/**
+ * The function returns the category of an object.
+ * 
+ * @return The method `getCategory()` is returning an object of the `Category` class.
+ */
     public Category getCategory(){
 
         return category;
     }
 
+/**
+ * The function returns the value of subscription sales as a double.
+ * 
+ * @return The method is returning the value of the variable "subscriptionSales"
+ */
     public double getSubSales(){
 
         return subscriptionSales;
     }
 
+/**
+ * The function returns the subscription price as a double data type.
+ * 
+ * @return The method is returning the value of the variable "subscriptionPrice"
+ */
     public double getSubPrice(){
 
         return subscriptionPrice;
     }
 
+/**
+ * This function adds a given value to the total subscription sales.
+ * 
+ * @param sale a double value representing the amount of subscription sales to be added to the current
+ * total subscription sales.
+ */
     public void setSubSales(double sale){
 
         subscriptionSales += sale;

@@ -23,7 +23,7 @@ public class Controller{
  * 
  * @param pagesAmount an integer representing the number of pages in the book
  * @param name The name of the book being registered.
- * @param publishDate The date when the book was published.
+ * @param publishDateStr The date when the book was published.
  * @param url The URL parameter is a string that represents the URL of the book's webpage or online
  * store page.
  * @param review A string containing a review or description of the book.
@@ -120,7 +120,7 @@ public class Controller{
  * the change.
  * 
  * @param productId a String representing the unique identifier of a bibliographic product.
- * @param newDate A string representing the new publish date that will replace the current publish date
+ * @param newDateStr A string representing the new publish date that will replace the current publish date
  * of a bibliographic product.
  * @return The method is returning a message that indicates the original publish date of a product has
  * been changed to a new date. The message includes both the original date and the new date.
@@ -162,7 +162,6 @@ public class Controller{
  * @param newReview The new review that will replace the existing review of the book.
  * @return The method is returning a message indicating whether the book review was successfully
  * updated or not. If the book is found and updated, the message will be "The review has been updated".
- * If the book is not found, the message will be an empty string.
  */
     public String modifyBookReview(String productId, String newReview){
 
@@ -176,6 +175,10 @@ public class Controller{
                 bookFound = true;
                 book.setReview(newReview);
                 msg = "The review has been updated";        
+            }
+            else{
+
+                msg = "Couldnt find product.";
             }
         }
 
@@ -203,6 +206,10 @@ public class Controller{
                 bookFound = true;
                 book.setSellPrice(newPrice);
                 msg = "The price has been updated";        
+            }
+            else{
+
+                msg = "Couldnt find product.";
             }
         }
 
@@ -232,6 +239,10 @@ public class Controller{
                 magazine.setSubPrice(newPrice);
                 msg = "The price has been updated";
             }
+            else{
+
+                msg = "Couldnt find product.";
+            }
 
         }
 
@@ -260,6 +271,10 @@ public class Controller{
                 magazineFound = true;
                 magazine.setEmissionFrequency(newFrequency);
                 msg = "The frequency has been uptaded";
+            }
+            else{
+
+                msg = "Couldnt find product.";
             }
 
         }
@@ -304,6 +319,10 @@ public class Controller{
                 book.setGenre(newGenre);
                 msg = "The genre has been updated";
             }
+            else{
+
+                msg = "Couldnt find product.";
+            }
         }
 
         return msg;
@@ -346,6 +365,10 @@ public class Controller{
 
                 msg = "The frequency has been uptaded";
             }
+            else{
+
+                msg = "Couldnt find product.";
+            }
 
         }
 
@@ -366,6 +389,7 @@ public class Controller{
 
         boolean productFound = false;
         BibliographicProduct product = null;
+        String msg = " ";
 
         for(int i = 0; i < products.size() && !productFound; i++){
             product = products.get(i);
@@ -375,8 +399,9 @@ public class Controller{
 
             }
         }
-
-        return product;
+            return product;
+    
+        
     }
 
 /**
@@ -384,7 +409,7 @@ public class Controller{
  * 
  * @param pagesAmount The number of pages in the magazine.
  * @param name The name of the magazine being registered.
- * @param publishDate The date when the magazine was published.
+ * @param publishDateStr The date when the magazine was published.
  * @param url The URL parameter is a string that represents the web address or location of the
  * magazine, where it can be accessed or downloaded from.
  * @param subscriptionPrice The price that a customer has to pay to subscribe to the magazine.
@@ -516,8 +541,16 @@ public class Controller{
                         book.increaseSales(bookPrice);
                         
                     }
+                    else{
+
+                        msg = "User wasnt found";
+                    }
                 }
                 
+            }
+            else{
+
+                msg = "Couldnt find product.";
             }
 
         }
@@ -564,6 +597,7 @@ public class Controller{
                         Magazine magazine = (Magazine) product;
                         magazine.setActiveSubscription();
                         subscriptionPrice = magazine.getSubPrice();
+                        magazine.setSubSales(subscriptionPrice);
                     }
                     else if(user instanceof RegularUser && user.getId().equals(userId)){
                         RegularUser regularUser = (RegularUser) user;
@@ -571,11 +605,21 @@ public class Controller{
                         msg = regularUser.addProduct(product, flag) + productName;
                         Magazine magazine = (Magazine) product;
                         magazine.setActiveSubscription();
+                        subscriptionPrice = magazine.getSubPrice();
+                        magazine.setSubSales(subscriptionPrice);
                         
 
                     }
+                    else{
+
+                        msg = "User wasnt found";
+                    }
                 }
                 
+            }
+            else{
+
+                msg = "Product wasnt found";
             }
 
         }
@@ -955,15 +999,23 @@ public class Controller{
     }
 
 
-    public String[][] userProductsMatrix(String userId) {
+/**
+ * The function returns a tensor of the user's products sorted in a matrix format.
+ * 
+ * @param userId The ID of the user for whom we want to generate a tensor of their purchased products.
+ * @return An ArrayList of String matrices representing the user's purchased products, organized in a
+ * tensor format.
+ */
+    public ArrayList<String[][]> userProductsTensor(String userId) {
 
-        String msg = " ";
         boolean userFound = false;
         int row = 5;
         int column = 5;
-        String[][] productIdMatrix = new String[row][column];
+        boolean isCompleted = false;
+        ArrayList<String[][]> tensor = new ArrayList<>();
 
-        for (int x = 0; x < users.size() && !userFound; x++) {
+        for (int x = 0; x < users.size() && !userFound; x++){
+
             Users user = users.get(x);
 
             if (user.getId().equals(userId) && user instanceof PremiumUser) {
@@ -973,29 +1025,89 @@ public class Controller{
                 ArrayList<BibliographicProduct> userProd = bubbleSort(premiumUser.getProducts());
 
                 int k = 0;
+                
 
-                for (int i = 0; i < row; i++) {
-                    for (int j = 0; j < column; j++) {
-                        if (k < userProd.size()) {
-                            productIdMatrix[i][j] = userProd.get(k).getId();
-                            k++;
-                        } 
-                        else{
-                        // Si ya no hay más productos en userProd, se puede asignar un valor indicativo o dejarlo en blanco
-                        // dependiendo de tus requisitos.
-                            productIdMatrix[i][j] = ""; // O algún otro valor indicativo
+                do{
+
+                    String[][] productIdMatrix = new String[row][column];
+
+                    for (int i = 0; i < row; i++) {
+                        for (int j = 0; j < column; j++) {
+                            if (k < userProd.size()) {
+                                productIdMatrix[i][j] = userProd.get(k).getId();
+                                k++;
+                            } 
+                            else{
+ 
+                                productIdMatrix[i][j] = "__"; 
+
+                            }
+                        }
+                    
+                    }
+
+                    tensor.add(productIdMatrix);
+
+                }while(tensor.size() != 3);
+
+            }     
+            else if(user.getId().equals(userId) && user instanceof RegularUser){
+
+                RegularUser regularUser = (RegularUser) user;
+                userFound = true;
+
+                ArrayList<BibliographicProduct> userBooks = regularUser.getBooks();
+                ArrayList<BibliographicProduct> userMagazines = regularUser.getMagazines();
+                ArrayList<BibliographicProduct> userProd = new ArrayList<>();
+                userProd.addAll(userBooks);
+                userProd.addAll(userMagazines);
+
+                ArrayList<BibliographicProduct> userSortProd = bubbleSort(userProd);
+
+                int l = 0;
+
+                do{
+
+                    String[][] productIdMatrix = new String[row][column];
+
+                    for (int m = 0; m < row; m++) {
+                        for (int n = 0; n < column; n++) {
+                            if (l < userSortProd.size()) {
+                                productIdMatrix[m][n] = userSortProd.get(l).getId();
+                                l++;    
+                            } 
+                            else{
+
+                                productIdMatrix[m][n] = "__"; 
+                            }
                         }
                     }
-                }
+
+
+                    tensor.add(productIdMatrix);
+
+                }while(tensor.size() != 3);
+
             }
         }
 
-        return productIdMatrix;
+        return tensor;
     }
 
-    public String showUserLibrary(String userId){
+/**
+ * This function takes a user ID and an index of a tensor, retrieves a product matrix from a list of
+ * matrices, and returns a formatted string representation of the matrix.
+ * 
+ * @param userId A String representing the unique identifier of a user in a system or application.
+ * @param indexOfTensor The index of the tensor.
+ * @return The method `showUserLibrary` returns a `String` that represents a matrix of products owned
+ * by a user, where each row represents a category and each column represents a subcategory. If a cell
+ * is empty, it is represented by "__".
+ */
+    public String showUserLibrary(String userId, int indexOfTensor){
 
-        String[][] productMatrix = userProductsMatrix(userId);
+        ArrayList<String[][]> matrixTensor = userProductsTensor(userId);
+        String[][] productMatrix = matrixTensor.get(indexOfTensor);
         String msg = " ";
 
         for(int i = 0; i < 5; i++){
@@ -1018,32 +1130,42 @@ public class Controller{
     }
 
 
+/**
+ * This function that implements the bubble sort algorithm to sort an ArrayList of
+ * BibliographicProduct objects in ascending order based on their natural ordering.
+ * 
+ * @param products An ArrayList of BibliographicProduct objects that needs to be sorted using bubble
+ * sort algorithm.
+ * @return The method is returning an ArrayList of BibliographicProduct objects that has been sorted in
+ * ascending order using the bubble sort algorithm.
+ */
     public ArrayList<BibliographicProduct> bubbleSort(ArrayList<BibliographicProduct> products) {
 
         int n = products.size();
 
         for (int i = 0; i < n - 1; i++) {
-
-            boolean swapped = false;
-
             for (int j = 0; j < n - i - 1; j++) {
                 if (products.get(j).compareTo(products.get(j + 1)) > 0) {
                     BibliographicProduct product = products.get(j);
                     products.set(j, products.get(j + 1));
                     products.set(j + 1, product);
-                    swapped = true;
+                    
                 }
             }
 
-            if(!swapped){
 
-                break;
-            }
         }
 
         return products;
     }
 
+/**
+ * This Java function retrieves the name of a user based on their user ID.
+ * 
+ * @param userId The ID of the user whose name is to be retrieved.
+ * @return The method is returning a String variable called "userName", which represents the name of
+ * the user with the given userId.
+ */
     public String getUserName(String userId){
         
         String userName = " ";

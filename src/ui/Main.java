@@ -115,10 +115,21 @@ public class Main{
             case 9:
 
                 System.out.println("-----------------------------------");
+                informMostReadGenreAndCategory();
+                break;
+            
+            case 10:
+
+                System.out.println("-----------------------------------");
+                informGenreStats();
+                break;
+            
+            case 11:
+
+                System.out.println("-----------------------------------");
+                informCategoryStats();
                 break;
 
-                
-            
             case 12:
 
                 System.out.println("---------------------------------------");
@@ -157,6 +168,7 @@ public class Main{
         System.out.println("Enter the amount of pages: ");
         pagesAmount = reader.nextInt();   
         System.out.println("Enter the url of the product: ");     
+        url = reader.next();
 
         if(option == 1){
 
@@ -383,7 +395,7 @@ public class Main{
                 System.out.println("5. Magazine category");
                 System.out.println("6. Magazine subscription price");
                 System.out.println("7. Nothing");
-                secondOption = reader.nextInt();
+                thirdOption = reader.nextInt();
 
                 if(thirdOption == 1){
                     
@@ -441,9 +453,14 @@ public class Main{
     }
 
 
+
 /**
- * This function simulates a lecture by allowing the user to read a product's pages and move forward or
- * backward until they finish the lecture.
+ * This function simulates a lecture session for a user reading a product, taking into account whether
+ * the user is a premium user and whether the product has ads.
+ * 
+ * @param userId The ID of the user who is simulating the lecture.
+ * @param productId The unique identifier of the product (e.g. book, article, etc.) that the user wants
+ * to simulate a lecture for.
  */
     public void simulateLecture(String userId, String productId){
 
@@ -543,7 +560,7 @@ public class Main{
             }
 
         }
-        else{
+        else if(isPremiumUser == true){
 
             if(adsFlag == true){
 
@@ -609,13 +626,17 @@ public class Main{
 
     }
 
+/**
+ * The function displays a user's library and allows them to simulate a lecture, navigate through
+ * pages, and exit.
+ */
     public void showLibrary(){
 
         String userId = " ";
         String productId= " ";
         String userName = " ";
         int option = 0;
-
+        int actualPage = 0;
         System.out.println("Type the user id: ");
         userId = reader.next();
 
@@ -626,7 +647,8 @@ public class Main{
             System.out.println(" ");
             System.out.println(userName + " Library");
             System.out.println(" ");
-            System.out.println(controller.showUserLibrary(userId));
+            System.out.println("0 " + " 1 " + " 2 " + " 3 " + " 4");
+            System.out.println(controller.showUserLibrary(userId, actualPage));
             System.out.println(" ");
             System.out.println("0. Simulate a lecture");
             System.out.println("1. Next page");
@@ -638,9 +660,45 @@ public class Main{
 
                 System.out.println("Enter the product id: ");
                 productId = reader.next();
-                simulateLecture(productId, userId);
+                simulateLecture(userId, productId);
+                productId = " ";
 
             }
+            else if(option == 1){
+                
+                if(actualPage == 2){
+
+                    System.out.println("------------------------------");
+                    System.out.println(" ");
+                    System.out.println("You are in the last page, theres not next page.");
+                    System.out.println(" ");
+                    System.out.println("------------------------------");
+                    
+                }
+                else{
+                    
+                    actualPage++;
+                }
+                
+
+
+            }
+            else if(option == 2){
+
+                if(actualPage == 0){
+
+                    System.out.println("------------------------------");
+                    System.out.println(" ");
+                    System.out.println("You are in the first page, theres not previous page.");
+                    System.out.println(" ");
+                    System.out.println("------------------------------");
+                }
+                else{
+
+                    actualPage--;
+                }
+            }
+
 
         }while(option != 3);
 
@@ -648,6 +706,9 @@ public class Main{
     }
 
 
+/**
+ * This function prints out the number of pages read using a controller object.
+ */
     public void informPagesRead(){
 
         System.out.println(controller.informPagesRead());
@@ -655,7 +716,34 @@ public class Main{
     }
 
 /**
- * This function initializes the system and prints the result of the initialization process.
+ * This function prints the most read genre and category using the controller's method.
+ */
+    public void informMostReadGenreAndCategory(){
+
+        System.out.println(controller.informMostReadGenreAndCategory());
+    }
+
+/**
+ * This function prints out the statistics of genres using the controller's informGenresStats method.
+ */
+    public void informGenreStats(){
+
+        System.out.println(controller.informGenresStats());
+        
+    }
+
+
+/**
+ * This function prints out the statistics of categories using the controller's informCategoriesStats
+ * method.
+ */
+    public void informCategoryStats(){
+
+        System.out.println(controller.informCategoriesStats());
+    }
+
+/**
+ * This function initializes a system and prints the result of the initialization process.
  */
     public void initSystem() throws Exception{
 
