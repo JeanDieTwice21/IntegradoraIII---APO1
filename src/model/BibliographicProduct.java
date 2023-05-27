@@ -1,8 +1,9 @@
 package model;
 import java.util.Calendar;
-import java.util.SimpleDateFormat;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 
-public abstract class BibliographicProduct{
+public abstract class BibliographicProduct implements Comparable<BibliographicProduct>{
 
     private String productId;
     private String productName;
@@ -88,7 +89,7 @@ public abstract class BibliographicProduct{
  * @param newPublishDate a String variable that represents the new publish date to be set for an
  * object.
  */
-    public void setPublishDate(String newPublishDate){
+    public void setPublishDate(Calendar newPublishDate){
 
         this.publishDate = newPublishDate;
     }
@@ -105,5 +106,15 @@ public abstract class BibliographicProduct{
         
     }
 
-    
+    @Override
+
+    public int compareTo(BibliographicProduct productToCompare){
+
+        return productToCompare.getPublishDate().compareTo(publishDate);
+    }
+
+    public String toString(){
+
+        return productId;
+    }
 }

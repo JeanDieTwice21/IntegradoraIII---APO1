@@ -1,6 +1,6 @@
 package model;
 import java.util.Calendar;
-import java.util.SimpleDateFormat;
+import java.text.SimpleDateFormat;
 
 
 public class Book extends BibliographicProduct{

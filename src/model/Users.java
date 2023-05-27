@@ -1,10 +1,12 @@
 package model;
+import java.util.ArrayList;
 
 public abstract class Users{
 
     private String userName;
     private String userId;
     private String linkDate;
+
 
     public Users(String name, String id, String linkDate){
 
@@ -41,4 +43,6 @@ public abstract class Users{
     public String getLinkDate(){
         return linkDate;
     }
+
+
 }

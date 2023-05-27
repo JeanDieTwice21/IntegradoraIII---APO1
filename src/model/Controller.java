@@ -33,7 +33,7 @@ public class Controller{
  * @return The method is returning a message indicating that the book has been registered and providing
  * its ID.
  */
-    public String registerBook(int pagesAmount, String name, String publishDateStr, String url, String review, int genreFlag, double sellPrice){
+    public String registerBook(int pagesAmount, String name, String publishDateStr, String url, String review, int genreFlag, double sellPrice) throws Exception{
         
         UUID uuid = UUID.randomUUID();
         String id = uuid.toString().replace("-", "").substring(0, 3);
@@ -125,11 +125,11 @@ public class Controller{
  * @return The method is returning a message that indicates the original publish date of a product has
  * been changed to a new date. The message includes both the original date and the new date.
  */
-    public String modifyProductDate(String productId, String newDateStr){
+    public String modifyProductDate(String productId, String newDateStr) throws Exception{
         
         Calendar newDate = stringsToCalendar(newDateStr);
         BibliographicProduct product = getProduct(productId);
-        String originalDate = product.getPublishDate();
+        Calendar originalDate = product.getPublishDate();
         product.setPublishDate(newDate);
         String msg = "The publish date " + originalDate + " was changed to: " + newDate;
 
@@ -394,7 +394,7 @@ public class Controller{
  * @return The method is returning a String message indicating whether the magazine has been
  * successfully registered or not.
  */
-    public String registerMagazine(int pagesAmount, String name, String publishDateStr, String url, double subscriptionPrice, int categoryFlag, String emissionFrequency){
+    public String registerMagazine(int pagesAmount, String name, String publishDateStr, String url, double subscriptionPrice, int categoryFlag, String emissionFrequency) throws Exception{
         
         UUID uuid = UUID.randomUUID();
         String id = uuid.toString().replaceAll("[^a-zA-Z0-9]", "").substring(0, 3);
@@ -420,7 +420,7 @@ public class Controller{
 
         BibliographicProduct magazine = new Magazine( id, pagesAmount, name,  publishDate,  url,  subscriptionPrice, category, emissionFrequency);
         products.add(magazine);
-        msg = "The magazine has been registered";
+        msg = "The magazine has been registered, the id is: " + id;
 
         return msg;
     }
@@ -479,6 +479,7 @@ public class Controller{
         boolean userFound = false;
         String msg = " ";
         double bookPrice = 0;
+        int flag = 1;
 
         for(int i = 0; i < products.size() && !productFound; i++){
             
@@ -508,7 +509,7 @@ public class Controller{
 
                         RegularUser regularUser = (RegularUser) user;
                         userFound = true;
-                        msg = regularUser.addBook(product) + productName;
+                        msg = regularUser.addProduct(product, flag) + productName;
                         Book book = (Book) product;
                         book.increaseSoldBooks();
                         bookPrice = book.getPrice();
@@ -541,6 +542,7 @@ public class Controller{
         boolean userFound = false;
         double subscriptionPrice = 0;
         String msg = " ";
+        int flag = 2;
 
         for(int i = 0; i < products.size() && !productFound; i++){
             
@@ -566,7 +568,7 @@ public class Controller{
                     else if(user instanceof RegularUser && user.getId().equals(userId)){
                         RegularUser regularUser = (RegularUser) user;
                         userFound = true;
-                        msg = regularUser.addMagazine(product) + productName;
+                        msg = regularUser.addProduct(product, flag) + productName;
                         Magazine magazine = (Magazine) product;
                         magazine.setActiveSubscription();
                         
@@ -589,7 +591,7 @@ public class Controller{
  * @return The method is returning a String message that confirms the system has been charged and
  * provides the IDs of the objects created for testing purposes.
  */
-    public String initSystem(){
+    public String initSystem() throws Exception{
 
         String msg = " ";
 
@@ -612,7 +614,7 @@ public class Controller{
         users.add(premiumUser);
         users.add(regularUser);
 
-        msg = "System charged. the id of the objects created are: " + "\n" + "Book: " + bookId + "\n" + "Magazine: " + magazineId + "\n" + "Premium User: 9" + "\n" + "Regular user: 10" + "\n" +  "Use these id for tests.";
+        msg = "System charged. the id of the objects created are: " + "\n" + "Book: " + " Book1 " + bookId + "\n" + "Magazine: " + " Magazine1 " + magazineId + "\n" + "Premium User: 9" + "\n" + "Regular user: 10" + "\n" +  "Use these id for tests.";
     
         return msg;
 
@@ -674,8 +676,8 @@ public class Controller{
  */
     public String informPagesRead(){
         
-        int amountForBook = " ";
-        int amountForMagazine = " ";
+        int amountForBook = 0;
+        int amountForMagazine = 0;
 
         for(int i = 0; i < products.size(); i++){
             
@@ -729,7 +731,8 @@ public class Controller{
  */
     public String showAds(){
 
-        String[] ads = {"Subscribe to Combo Plus and get Disney+ and Star+ at an incredible price!", "Now your pets have a favorite app: Laika. The best products for your furry friend.", "It's our anniversary! Visit your nearest Éxito and be surprised with the best offers."}
+        Random random = new Random();
+        String[] ads = {"Subscribe to Combo Plus and get Disney+ and Star+ at an incredible price!", "Now your pets have a favorite app: Laika. The best products for your furry friend.", "It's our anniversary! Visit your nearest Éxito and be surprised with the best offers."};
         int randomIndex = random.nextInt(ads.length);
 
         return ads[randomIndex];
@@ -754,9 +757,9 @@ public class Controller{
 
         for(int i = 0; i < products.size(); i++){
 
-            BibliographicProduct producgt = products.get(i);
+            BibliographicProduct product = products.get(i);
 
-            if(products instanceof Magazine){
+            if(product instanceof Magazine){
                 
                 Magazine magazine = (Magazine) product;
                 Category magazineCategory = magazine.getCategory();
@@ -808,9 +811,9 @@ public class Controller{
 
         for(int i = 0; i < products.size(); i++){
 
-            BibliographicProduct producgt = products.get(i);
+            BibliographicProduct product = products.get(i);
 
-            if(products instanceof Book){
+            if(product instanceof Book){
                 
                 Book book = (Book) product;
                 Genre bookGenre = book.getGenre();
@@ -822,7 +825,7 @@ public class Controller{
                 }
                 else if(bookGenre == Genre.FANTASY){
                     
-                    fantasySoldBooks += magazine.getSoldBooks();
+                    fantasySoldBooks += book.getSoldBooks();
                     fantasySales += book.getSales();
 
                 }
@@ -858,7 +861,7 @@ public class Controller{
         int pagesReadGenre = 0;
         int pagesReadCategory = 0;
         Genre mostReadGenre = null;
-        Category mostReadCategory = null:
+        Category mostReadCategory = null;
 
         for(int i = 0; i < products.size(); i++){
 
@@ -878,7 +881,7 @@ public class Controller{
             }
         }
 
-        for(int j = 0; j products.size(); j++){
+        for(int j = 0; j < products.size(); j++){
 
             BibliographicProduct product = products.get(j);
 
@@ -912,7 +915,7 @@ public class Controller{
         boolean completed = false;
         boolean isPremium = false;
 
-        for(int = 0; i < users.size(); i++){
+        for(int i = 0; i < users.size(); i++){
             
             Users user = users.get(i);
 
@@ -951,6 +954,111 @@ public class Controller{
         return newDate; 
     }
 
+
+    public String[][] userProductsMatrix(String userId) {
+
+        String msg = " ";
+        boolean userFound = false;
+        int row = 5;
+        int column = 5;
+        String[][] productIdMatrix = new String[row][column];
+
+        for (int x = 0; x < users.size() && !userFound; x++) {
+            Users user = users.get(x);
+
+            if (user.getId().equals(userId) && user instanceof PremiumUser) {
+                PremiumUser premiumUser = (PremiumUser) user;
+                userFound = true;
+
+                ArrayList<BibliographicProduct> userProd = bubbleSort(premiumUser.getProducts());
+
+                int k = 0;
+
+                for (int i = 0; i < row; i++) {
+                    for (int j = 0; j < column; j++) {
+                        if (k < userProd.size()) {
+                            productIdMatrix[i][j] = userProd.get(k).getId();
+                            k++;
+                        } 
+                        else{
+                        // Si ya no hay más productos en userProd, se puede asignar un valor indicativo o dejarlo en blanco
+                        // dependiendo de tus requisitos.
+                            productIdMatrix[i][j] = ""; // O algún otro valor indicativo
+                        }
+                    }
+                }
+            }
+        }
+
+        return productIdMatrix;
+    }
+
+    public String showUserLibrary(String userId){
+
+        String[][] productMatrix = userProductsMatrix(userId);
+        String msg = " ";
+
+        for(int i = 0; i < 5; i++){
+            for(int x = 0; x < 5; x++){
+                if(productMatrix[i][x] != null){
+
+                    msg += productMatrix[i][x] + " ";
+                }
+                else{
+
+                    msg += "__";
+                }
+                    
+            }
+
+            msg += "\n";
+        }
+
+        return msg;
+    }
+
+
+    public ArrayList<BibliographicProduct> bubbleSort(ArrayList<BibliographicProduct> products) {
+
+        int n = products.size();
+
+        for (int i = 0; i < n - 1; i++) {
+
+            boolean swapped = false;
+
+            for (int j = 0; j < n - i - 1; j++) {
+                if (products.get(j).compareTo(products.get(j + 1)) > 0) {
+                    BibliographicProduct product = products.get(j);
+                    products.set(j, products.get(j + 1));
+                    products.set(j + 1, product);
+                    swapped = true;
+                }
+            }
+
+            if(!swapped){
+
+                break;
+            }
+        }
+
+        return products;
+    }
+
+    public String getUserName(String userId){
+        
+        String userName = " ";
+        boolean userFound = false;
+
+        for(int i = 0; i < users.size() && !userFound; i++){
+            if(users.get(i).getId().equals(userId)){
+
+                userFound = true;
+                userName = users.get(i).getName();
+            }
+        }
+
+        return userName;
+    }
 
 
 }

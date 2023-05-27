@@ -13,7 +13,7 @@ public class Main{
         controller = new Controller();
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws Exception{
 
         Main view = new Main();
 
@@ -26,14 +26,14 @@ public class Main{
             view.executeChoice(choice);
 
 
-        }while(choice != 8);
+        }while(choice != 12);
         
     }
 
 /**
  * The function displays a menu for a ReadX user with options to perform various actions.
  */
-    public void menu(){
+    public void menu() throws Exception{
 
         System.out.println("-----------------------------------------");
         System.out.println("Welcome ReadX User");
@@ -43,10 +43,13 @@ public class Main{
         System.out.println("3. Modify bibliographic product");
         System.out.println("4. Registry user");
         System.out.println("5. Buy a bibliographic product");
-        System.out.println("6. Lecture session");
-        System.out.println("7. Get informed about the amount of read pages");
+        System.out.println("6. Show user library");
         System.out.println("7. Init system.");
-        System.out.println("8. Exit");
+        System.out.println("8. Report the total read pages");
+        System.out.println("9. Report most read genre & category");
+        System.out.println("10. Report genre stats");
+        System.out.println("11. Report category stats");
+        System.out.println("12. Exit");
         System.out.println(" ");
         System.out.println("-----------------------------------------");
     }
@@ -57,7 +60,7 @@ public class Main{
  * @param choice an integer representing the user's choice from a menu of options. The method executes
  * a specific action based on the user's choice using a switch statement.
  */
-    public void executeChoice(int choice){
+    public void executeChoice(int choice) throws Exception{
 
         switch(choice){
 
@@ -94,7 +97,7 @@ public class Main{
             case 6:
                 
                 System.out.println("---------------------------------");
-                simulateLecture();
+                showLibrary();
                 break;
             
             case 7:
@@ -104,6 +107,19 @@ public class Main{
                 break;
             
             case 8:
+
+                System.out.println("-----------------------------------");
+                informPagesRead();
+                break;
+            
+            case 9:
+
+                System.out.println("-----------------------------------");
+                break;
+
+                
+            
+            case 12:
 
                 System.out.println("---------------------------------------");
                 System.out.println("Goodbye.");
@@ -117,7 +133,7 @@ public class Main{
  * This function allows the user to register a book or magazine by inputting various details such as
  * name, publish date, pages amount, and genre.
  */
-    public void registryBibliographicProduct(){
+    public void registryBibliographicProduct() throws Exception{
 
         String confirmMsg = " ";
         int pagesAmount = 0;
@@ -241,7 +257,7 @@ public class Main{
         System.out.println("What do you want to buy?: ");
         System.out.println("1. A book");
         System.out.println("2. A magazine");
-        option = reader.next();
+        option = reader.nextInt();
         System.out.println("Type the name of the product.");
         productName = reader.next();
         System.out.println("Type your id: ");
@@ -266,7 +282,7 @@ public class Main{
  * This function allows the user to modify the attributes of a book or magazine product in a library
  * system.
  */
-    public void modifyBibliographicProduct(){
+    public void modifyBibliographicProduct() throws Exception{
 
         int firstOption = 0;
         int secondOption = 0;
@@ -429,9 +445,8 @@ public class Main{
  * This function simulates a lecture by allowing the user to read a product's pages and move forward or
  * backward until they finish the lecture.
  */
-    public void simulateLecture(String userId){
+    public void simulateLecture(String userId, String productId){
 
-        String productId = " ";
         int totalPages = 0;
         String productName = " ";
         int startPages = 1;
@@ -439,9 +454,6 @@ public class Main{
         boolean adsFlag;
         int showAds = 0;
         boolean isPremiumUser = false;
-
-        System.out.println("Enter the id of the product to read: ");
-        productId = reader.next();
 
         productName =  controller.sendNameForSimulation(productId);
         totalPages = controller.sendTotalPagesForSimulation(productId);
@@ -597,6 +609,43 @@ public class Main{
 
     }
 
+    public void showLibrary(){
+
+        String userId = " ";
+        String productId= " ";
+        String userName = " ";
+        int option = 0;
+
+        System.out.println("Type the user id: ");
+        userId = reader.next();
+
+        userName = controller.getUserName(userId);
+
+        do{
+
+            System.out.println(" ");
+            System.out.println(userName + " Library");
+            System.out.println(" ");
+            System.out.println(controller.showUserLibrary(userId));
+            System.out.println(" ");
+            System.out.println("0. Simulate a lecture");
+            System.out.println("1. Next page");
+            System.out.println("2. Previous page");
+            System.out.println("3. Exit.");
+            option = reader.nextInt();
+
+            if(option == 0){
+
+                System.out.println("Enter the product id: ");
+                productId = reader.next();
+                simulateLecture(productId, userId);
+
+            }
+
+        }while(option != 3);
+
+
+    }
 
 
     public void informPagesRead(){
@@ -608,7 +657,7 @@ public class Main{
 /**
  * This function initializes the system and prints the result of the initialization process.
  */
-    public void initSystem(){
+    public void initSystem() throws Exception{
 
         System.out.println(controller.initSystem());
     }
